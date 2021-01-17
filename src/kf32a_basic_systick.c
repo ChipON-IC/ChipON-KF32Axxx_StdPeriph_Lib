@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_systick.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.3
+  * 版  本  V2.4
   * 日  期  2019-11-16
   * 描  述  该文件提供了节拍定时器外设功能函数，包含：
   *          + 节拍定时器(SYSTICK)外设初始化函数定义
@@ -160,7 +160,7 @@ SYSTICK_Systick_INT_Enable (uint32_t SysClock)
   * 返回  节拍定时器计数到零的标志，0：计数未到零，1：计数到零。
   */
 FlagStatus
-SYSTICK_Get_Count_Zero_Flag (ATIM_SFRmap* ATIMx)
+SYSTICK_Get_Count_Zero_Flag (void)
 {
     /*-------------------- 设置ST_CTL寄存器COUNTZERO位 --------------------*/
     if (ST_CTL & ST_CTL_COUNTZERO)

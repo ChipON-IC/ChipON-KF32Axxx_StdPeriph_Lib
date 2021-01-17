@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_int.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.3
+  * 版  本  V2.4
   * 日  期  2019-11-16
   * 描  述  该文件提供了中断相关的功能函数，包含：
   *          + 中断(INT)功能配置函数定义
@@ -419,7 +419,7 @@ void
 INT_Clear_Interrupt_Flag (InterruptIndex Peripheral)
 {
     uint32_t tmpreg = 0;
-    uint32_t tmpreg1 = 0;
+    volatile uint32_t *tmpreg1 = 0;
 
     /* 参数校验 */
     CHECK_RESTRICTION(CHECK_PERIPHERAL_INTERRUPT_INDEX(Peripheral));
@@ -428,19 +428,19 @@ INT_Clear_Interrupt_Flag (InterruptIndex Peripheral)
     {
         /*---------------- 设置INT_EIF0寄存器 ----------------*/
         tmpreg = INT_EIF0_NMIIF << (Peripheral - INT_NMI);
-        tmpreg1 = INT_EIF0;
+        tmpreg1 = &INT_EIF0;
     }
     else if (Peripheral <= INT_SPI1)
     {
         /*---------------- 设置INT_EIF1寄存器 ----------------*/
         tmpreg = INT_EIF1_WWDTIF << (Peripheral - INT_WWDT);
-        tmpreg1 = INT_EIF1;
+        tmpreg1 = &INT_EIF1;
     }
     else if (Peripheral <= INT_USART7)
     {
         /*---------------- 设置INT_EIF2寄存器 ----------------*/
         tmpreg = INT_EIF2_DMA1IF << (Peripheral - INT_DMA1);
-        tmpreg1 = INT_EIF2;
+        tmpreg1 = &INT_EIF2;
     }
     else
     {
@@ -449,7 +449,8 @@ INT_Clear_Interrupt_Flag (InterruptIndex Peripheral)
     }
 
     /*---------------- 清对应中断标志位状态 ----------------*/
-    (*(volatile uint32_t*)tmpreg1) &= ~tmpreg;
+    //(*(volatile uint32_t*)tmpreg1) &= ~tmpreg;
+    *tmpreg1 &= ~tmpreg;
 
 }
 /**

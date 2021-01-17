@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_systick.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.3
+  * 版  本  V2.4
   * 日  期  2019-11-16
   * 描  述  该文件提供了节拍定时器的库函数声明及相关宏定义。
   *********************************************************************
@@ -49,7 +49,7 @@ void SYSTICK_Configuration (uint32_t Clock, uint32_t SysTickINT,
 void SYSTICK_Cmd (FunctionalState NewState);
 void SYSTICK_Clock_Config (uint32_t SysClock);
 void SYSTICK_Systick_INT_Enable (uint32_t SysClock);
-FlagStatus SYSTICK_Get_Count_Zero_Flag (ATIM_SFRmap* ATIMx);
+FlagStatus SYSTICK_Get_Count_Zero_Flag (void);
 void SYSTICK_Reload_Config (uint32_t Reload);
 void SYSTICK_Counter_Updata (void);
 uint32_t SYSTICK_Get_Reload (void);

@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_usart.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.3
+  * 版  本  V2.4
   * 日  期  2019-11-16
   * 描述    该文件用于USART外设的库函数声明及相关宏定义。
   *
@@ -355,6 +355,7 @@ void USART_BaudRate_Integer_Config(USART_SFRmap* USARTx, uint16_t DIV);
 void USART_BaudRate_Decimal1_Config(USART_SFRmap* USARTx, uint32_t DIV);
 void USART_BaudRate_Decimal2_Config(USART_SFRmap* USARTx, uint32_t DIV);
 void USART_SendData(USART_SFRmap* USARTx, uint8_t Data);
+void USART_TransmitData(USART_SFRmap* USARTx, uint8_t Data);
 uint32_t USART_ReceiveData(USART_SFRmap* USARTx);
 void USART_Address_Match_Config(USART_SFRmap* USARTx, uint8_t DIV);
 /* USART模块(USART)7816初始化及配置函数定义****************************/

@@ -2,7 +2,7 @@
   *********************************************************************
   * 文件名 KF32A_Config.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.3
+  * 版  本  V2.4
   * 日  期  2019-11-16
   * 描  述  KF32A系列外设配置
   *
@@ -12,6 +12,7 @@
 #ifndef _KF32A_Config_H_
 #define _KF32A_Config_H_
 
+#include "__Kungfu32_chipmodel_define.h"
 /* 型号定义 */
 #ifdef KF32A151KQS
 	#define KF32A151

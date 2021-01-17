@@ -2,7 +2,7 @@
   *********************************************************************
   * 文件名 KF32A_BASIC.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.3
+  * 版  本  V2.4
   * 日  期  2019-11-16
   * 描  述  KF32A系列外设访问入口文件，包含：
   *          - 所有外设的内存结构
@@ -973,7 +973,7 @@ typedef struct GPIO_MemMap {
 #define CTMDDCTL_CTDMODE3_0         	((uint32_t)1<<(CTMDDCTL_CTDMODE3_0_POS))
 #define CTMDDCTL_CTDMODE3_1         	((uint32_t)1<<(CTMDDCTL_CTDMODE3_1_POS))
 #define CTMDDCTL_CTDMODE3_2         	((uint32_t)1<<(CTMDDCTL_CTDMODE3_2_POS))
-#define CTMDDCTL_CTDMODE4           	((uint32_t)0x7<<(CTMDDCTL0_CTDMODE4_0_POS))
+#define CTMDDCTL_CTDMODE4           	((uint32_t)0x7<<(CTMDDCTL_CTDMODE4_0_POS))
 #define CTMDDCTL_CTDMODE4_0         	((uint32_t)1<<(CTMDDCTL_CTDMODE4_0_POS))
 #define CTMDDCTL_CTDMODE4_1         	((uint32_t)1<<(CTMDDCTL_CTDMODE4_1_POS))
 #define CTMDDCTL_CTDMODE4_2         	((uint32_t)1<<(CTMDDCTL_CTDMODE4_2_POS))
@@ -1645,7 +1645,7 @@ typedef struct INT_MemMap {
 #define INT_EIE1_CAN5IE_POS             (19)
 #endif
 #ifdef  KF32A_Periph_exic
-#define INT_EIE1_EXIC_POS               (20)
+#define INT_EIE1_EXICIE_POS               (20)
 #endif
 #ifdef  KF32A_Periph_adc0
 #define INT_EIE1_ADC0IE_POS             (21)
@@ -2239,13 +2239,13 @@ typedef struct INT_MemMap {
 #define INT_EIF2_I2C3IF                 ((uint32_t)1<<(INT_EIF2_I2C3IF_POS))
 #endif
 #ifdef  KF32A_Periph_usart5
-#define INT_EIF2_USART5IF               ((uint32_t)1<<(INT_EIF2_USART5IF))
+#define INT_EIF2_USART5IF               ((uint32_t)1<<(INT_EIF2_USART5IF_POS))
 #endif
 #ifdef  KF32A_Periph_usart6
-#define INT_EIF2_USART6IF               ((uint32_t)1<<(INT_EIF2_USART6IF))
+#define INT_EIF2_USART6IF               ((uint32_t)1<<(INT_EIF2_USART6IF_POS))
 #endif
 #ifdef  KF32A_Periph_usart7
-#define INT_EIF2_USART7IF               ((uint32_t)1<<(INT_EIF2_USART7IF))
+#define INT_EIF2_USART7IF               ((uint32_t)1<<(INT_EIF2_USART7IF_POS))
 #endif
 /* INT_IP0 位域 */
 #define INT_IP0_PRI4_4_POS              (4)

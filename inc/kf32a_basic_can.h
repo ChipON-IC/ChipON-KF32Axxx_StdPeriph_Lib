@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_can.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.3
+  * 版  本  V2.4
   * 日  期  2019-11-16
   * 描  述  该文件提供了控制器局域网总线(CAN)相关功能函数声明及相关宏定义。
   *********************************************************************
@@ -87,11 +87,11 @@ typedef struct
 //									    || ((PERIPH) == CAN4_SFR) \
 //								        || ((PERIPH) == CAN5_SFR))
 #define CHECK_CAN_ALL_PERIPH(PERIPH)   (((PERIPH) ==  ((CAN_SFRmap *)(uint32_t)0x40001100)) \
-                                      || ((PERIPH) == ((CAN_SFRmap *)(uint32_t)0x40001100)) \
-                                      || ((PERIPH) == ((CAN_SFRmap *)(uint32_t)0x40001100)) \
-                                      || ((PERIPH) == ((CAN_SFRmap *)(uint32_t)0x40001100)) \
-									  || ((PERIPH) == ((CAN_SFRmap *)(uint32_t)0x40001100)) \
-								      || ((PERIPH) == ((CAN_SFRmap *)(uint32_t)0x40001100)))
+                                      || ((PERIPH) == ((CAN_SFRmap *)(uint32_t)0x40001180)) \
+                                      || ((PERIPH) == ((CAN_SFRmap *)(uint32_t)0x40001900)) \
+                                      || ((PERIPH) == ((CAN_SFRmap *)(uint32_t)0x40001980)) \
+									  || ((PERIPH) == ((CAN_SFRmap *)(uint32_t)0x40002880)) \
+								      || ((PERIPH) == ((CAN_SFRmap *)(uint32_t)0x40002900)))
 /**
   * CAN传输事件状态类型
   */

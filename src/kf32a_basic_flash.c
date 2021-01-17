@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_flash.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.3
+  * 版  本  V2.4
   * 日  期  2019-11-16
   * 描  述  该文件提供了FLASH程序存储器(FLASH)相关的功能函数，包含：
   *          + FLASH程序存储器(FLASH)功能配置函数
@@ -296,7 +296,7 @@ FLASH_Unlock_User_Config(void)
   * 输入  NewState: FLASH写缓存使能状态，取值为TRUE 或 FALSE。
   * 返回  无。
   */
-void
+void  __attribute__((section(".indata")))
 FLASH_Data_Write_Enable_RAM (FunctionalState NewState)
 {
     /* 参数校验 */

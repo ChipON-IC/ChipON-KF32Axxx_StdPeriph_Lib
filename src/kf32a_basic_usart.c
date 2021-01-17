@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_usart.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.3
+  * 版  本  V2.4
   * 日  期  2019-11-16
   * 描  述  该文件提供了USART模块(USART)相关的功能函数，包含：
   *          + USART模块(USART)初始化函数
@@ -1015,6 +1015,22 @@ USART_SendData(USART_SFRmap* USARTx, uint8_t Data)
     /* 参数校验 */
     CHECK_RESTRICTION(CHECK_USART_ALL_PERIPH(USARTx));
 
+    /*---------------- 设置USART_TBUFR寄存器 ----------------*/
+    USARTx->TBUFR = Data;
+}
+
+/**
+  * 描述  USART发送字节,并等待发送器和缓冲器空。
+  * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。
+  *       Data: 写入数据寄存器的值，取值为0~255。
+  */
+void
+USART_TransmitData(USART_SFRmap* USARTx, uint8_t Data)
+{
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_USART_ALL_PERIPH(USARTx));
+    /*---------------- 	等待发送器为空	----------------*/
+     while(!(USARTx->STR & USART_STR_TXEIF));
     /*---------------- 设置USART_TBUFR寄存器 ----------------*/
     USARTx->TBUFR = Data;
 }

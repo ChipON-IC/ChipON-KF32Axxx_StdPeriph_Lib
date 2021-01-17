@@ -2,7 +2,7 @@
   ********************************************************************
   * 文件名  kf32a_basic_flash.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.3
+  * 版  本  V2.4
   * 日  期  2019-11-16
   * 描  述  该文件提供了FLASH程序存储器(FLASH)相关功能函数声明及相关宏定义。
   *********************************************************************
@@ -197,5 +197,6 @@ FlagStatus FLASH_Get_Program_Status (void);
 FlagStatus FLASH_Get_Wipe_Status (void);
 
 void FLASH_Wipe_Configuration (uint32_t WipeMode,uint32_t WipeAddr);
+uint32_t Read_Flash_or_CFR_RAM (uint32_t address,uint32_t ZoneSelect);
 
 #endif /* _KF32A_BASIC_FLASH_H */
