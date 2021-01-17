@@ -2,7 +2,7 @@
   ********************************************************************
   * 文件名  system_init.h
   * 作  者   ChipON_AE/FAE_Group
-  * 版  本  V2.6
+  * 版  本  V2.61
   * 日  期  2018-3-15
   * 描  述  该文件提供了外设库包含的头文件与系统时钟配置相关的宏定义。
   *
@@ -53,13 +53,28 @@
 #endif
 
 /* 系统时钟选择 */
+#ifdef KF32A150
+//#define SYSCLK_FREQ_48MHz	48000000
+//#define SYSCLK_FREQ_72MHz	72000000
+//#define SYSCLK_FREQ_96MHz	96000000
+#define SYSCLK_FREQ_120MHz	120000000
+#endif
 #ifdef KF32A151
 //#define SYSCLK_FREQ_48MHz	48000000
 //#define SYSCLK_FREQ_72MHz	72000000
 //#define SYSCLK_FREQ_96MHz	96000000
 #define SYSCLK_FREQ_120MHz	120000000
 #endif
+#ifdef KF32A152
+//#define SYSCLK_FREQ_48MHz	48000000
+//#define SYSCLK_FREQ_72MHz	72000000
+//#define SYSCLK_FREQ_96MHz	96000000
+#define SYSCLK_FREQ_120MHz	120000000
+#endif
 
+#ifdef KF32A140
+#define SYSCLK_FREQ_48MHz	48000000
+#endif
 #ifdef KF32A141
 #define SYSCLK_FREQ_48MHz	48000000
 #endif
@@ -69,7 +84,15 @@
 //#define SYSCLK_FREQ_48MHz	48000000
 #define SYSCLK_FREQ_64MHz	64000000
 #endif
+#ifdef KF32A251
+//#define SYSCLK_FREQ_48MHz	48000000
+#define SYSCLK_FREQ_64MHz	64000000
+#endif
+
 
 static void SetSysClock(void);
 void SystemInit(void);
+void systick_delay_init();
+void systick_delay_us(unsigned int nus);
+void systick_delay_ms(unsigned int mus);
 #endif /* SYS_H_ */
