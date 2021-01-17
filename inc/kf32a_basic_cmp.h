@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_cmp.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.5
+  * 版  本  V2.6
   * 日  期  2019-11-16
   * 描述    该文件用于比较器(CMP)外设的库函数声明及相关宏定义。
   *
@@ -114,6 +114,7 @@ typedef struct
 /**
   * CMP3正端输入选择
   */
+#define CMP3_PositiveINPUT_PIN_OP2OUT			  ((uint32_t)1 << CMP_CTL3_PSEL_POS)
 #define CMP3_PositiveINPUT_PIN_PA0                ((uint32_t)0 << CMP_CTL3_PMOD0_POS)
 #define CMP3_PositiveINPUT_PIN_PA9                ((uint32_t)1 << CMP_CTL3_PMOD0_POS)
 #define CMP3_PositiveINPUT_PIN_PB2                ((uint32_t)2 << CMP_CTL3_PMOD0_POS)
@@ -123,6 +124,7 @@ typedef struct
 #define CMP3_PositiveINPUT_PIN_DAC0OUT            ((uint32_t)6 << CMP_CTL3_PMOD0_POS)
 #define CMP3_PositiveINPUT_PIN_DAC1OUT            ((uint32_t)7 << CMP_CTL3_PMOD0_POS)
 #define CHECK_CMP3_PositiveINPUT_PIN(SEL)         (((SEL) == CMP3_PositiveINPUT_PIN_PA0) \
+												  || ((SEL) == CMP3_PositiveINPUT_PIN_OP2OUT)\
 										          || ((SEL) == CMP3_PositiveINPUT_PIN_PA9)\
 										          || ((SEL) == CMP3_PositiveINPUT_PIN_PB2)\
 										          || ((SEL) == CMP3_PositiveINPUT_PIN_PB15)\
@@ -356,7 +358,17 @@ typedef struct
 #define CMP3_OUTPUT_Opposite                   ((uint32_t)1<<CMP_CTL3_POL_POS)
 #define CHECK_CMP3_OUTPUT(SEL)                 (((SEL) == CMP3_OUTPUT_Normal) \
         							           || ((SEL) == CMP3_OUTPUT_Opposite))
-
+/**
+  * CMP输出选择
+  */
+#define NONE                   		  ((uint32_t)0<<CMP_CTL4_CMPOUT0_POS)
+#define CMP0_OUTPUT                   ((uint32_t)1<<CMP_CTL4_CMPOUT0_POS)
+#define CMP1_OUTPUT                   ((uint32_t)2<<CMP_CTL4_CMPOUT0_POS)
+#define CMP2_OUTPUT                   ((uint32_t)3<<CMP_CTL4_CMPOUT0_POS)
+#define CHECK_CMP_OUTPUT(SEL)            (((SEL) == NONE) \
+										|| ((SEL) == CMP0_OUTPUT) \
+										|| ((SEL) == CMP1_OUTPUT) \
+        							    || ((SEL) == CMP2_OUTPUT))
 /**
 /**
   * 比较器中断标志位触发模式选择位
@@ -411,11 +423,12 @@ void CMP1_NEGATIVE_INPUT_SELECT (uint32_t Select);
 void CMP2_POSITIVE_INPUT_SELECT (uint32_t Select);
 void CMP2_NEGATIVE_INPUT_SELECT (uint32_t Select);
 void CMP3_POSITIVE_INPUT_SELECT (uint32_t Select);
-void CMP4_NEGATIVE_INPUT_SELECT (uint32_t Select);
-void CMP0_ONPUT_POL_SELECT (uint32_t Select);
-void CMP1_ONPUT_POL_SELECT (uint32_t Select);
-void CMP2_ONPUT_POL_SELECT (uint32_t Select);
-void CMP3_ONPUT_POL_SELECT (uint32_t Select);
+void CMP3_NEGATIVE_INPUT_SELECT (uint32_t Select);
+void CMP0_OUTPUT_POL_SELECT (uint32_t Select);
+void CMP1_OUTPUT_POL_SELECT (uint32_t Select);
+void CMP2_OUTPUT_POL_SELECT (uint32_t Select);
+void CMP3_OUTPUT_POL_SELECT (uint32_t Select);
+void CMP_OUTPUT_SELECT (uint32_t Select);
 FlagStatus CMP0_Read_Output_State ();
 FlagStatus CMP1_Read_Output_State ();
 FlagStatus CMP2_Read_Output_State ();

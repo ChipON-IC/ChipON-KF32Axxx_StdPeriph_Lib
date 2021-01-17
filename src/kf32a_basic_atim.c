@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_atim.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.5
+  * 版  本  V2.6
   * 日  期  2019-11-16
   * 描  述  该文件提供了高级定时器外设功能函数，包含：
   *          + 高级定时器(ATIM)初始化及配置函数定义
@@ -801,7 +801,7 @@ ATIM_X_Overflow_AD_Enable (ATIM_SFRmap* ATIMx, FunctionalState NewState)
     }
     else
     {
-    	/* 上溢中断使能 */
+        /* 上溢中断禁止 */
         SFR_CLR_BIT_ASM(ATIMx->TXCTL, ATIM_TXCTL_TXOFS1_POS);
     }
 }
@@ -1923,6 +1923,7 @@ ATIM_X_Get_Trigger_DMA_INT_Flag (ATIM_SFRmap* ATIMx)
   * 输入  ATIMx: 指向定时器内存结构的指针，
   *              取值T5_SFR/T9_SFR。
   * 返回  无
+  * 特殊说明：清除该标志位需在使能对应定时器的情况下进行，否则会导致清除失败。
   */
 void
 ATIM_X_Clear_Updata_INT_Flag (ATIM_SFRmap* ATIMx)
@@ -1941,6 +1942,7 @@ ATIM_X_Clear_Updata_INT_Flag (ATIM_SFRmap* ATIMx)
   * 输入  ATIMx: 指向定时器内存结构的指针，
   *              取值T6_SFR/T10_SFR。
   * 返回  无
+  * 特殊说明：清除该标志位需在使能对应定时器的情况下进行，否则会导致清除失败。
   */
 void
 ATIM_Z_Clear_Updata_INT_Flag (ATIM_SFRmap* ATIMx)
@@ -2317,7 +2319,7 @@ ECCP_Compare_Mode_Config (ECCP_SFRmap* ECCPx,
 }
 
 /**
-  * 描述  配置ECCP PWM功能。
+  * 描述  配置ECCP PWM功能,模式选择，自由，协同，单时机模式。
   * 输入  ECCPx: 指向ECCP或高级定时器内存结构的指针，
   *              取值ECCP5_SFR/ECCP9_SFR。
   *       PWMConfig: PWM匹配模式，取值范围为:
@@ -2369,6 +2371,38 @@ ECCP_Get_Capture_Result (ECCP_SFRmap* ECCPx, uint32_t Channel)
     /* 通过16位类型指针获取寄存器低16位的值 */
     return (*(volatile const uint16_t*)  tmpreg);
 }
+
+/**
+  * 描述  读取ECCP比较/EPWM占空比寄存器。
+  * 输入  ECCPx: 指向ECCP或高级定时器内存结构的指针，
+  *               取值T5_SFR/T9_SFR
+  *               或ECCP5_SFR/ECCP9_SFR
+  *       Channel: 捕捉通道选择，取值范围为:
+  *                  ECCP_CHANNEL_1: 通道1
+  *                  ECCP_CHANNEL_2: 通道2
+  *                  ECCP_CHANNEL_3: 通道3
+  *                  ECCP_CHANNEL_4: 通道4
+  * 返回  比较/PWM占空比寄存器的值。
+  */
+uint16_t
+ECCP_Get_Compare_Result (ECCP_SFRmap* ECCPx, uint32_t Channel)
+{
+    uint32_t tmpreg = 0;
+
+    /* 参数校验 */
+      CHECK_RESTRICTION(CHECK_ATIM_PERIPH(ECCPx));
+      CHECK_RESTRICTION(CHECK_ECCP_CHANNEL(Channel));
+
+
+    /* 获取寄存器访问地址 */
+    tmpreg = (uint32_t)ECCPx;
+    tmpreg = tmpreg + ECCP_RY_OFFSET + (4 * Channel);
+
+    /* 通过16位类型指针获取寄存器低16位的值 */
+    return (*(volatile const uint16_t*)  tmpreg);
+}
+
+
 
 /**
   * 描述  配置ECCP比较/PWM占空比寄存器。
@@ -2749,6 +2783,45 @@ ECCP_Get_Channel_Work_State (ECCP_SFRmap* ECCPx, uint32_t Channel)
     }
 }
 
+/**
+  * 描述  配置通道自动关闭源选择位。
+  * 输入  ECCPx: 指向ECCP或高级定时器内存结构的指针，
+  *              取值ECCP5_SFR/ECCP9_SFR。
+  *       Channel: 捕捉通道选择，取值范围为:
+  *                  ECCP_CHANNEL_1: 通道1
+  *                  ECCP_CHANNEL_2: 通道2
+  *                  ECCP_CHANNEL_3: 通道3
+  *                  ECCP_CHANNEL_4: 通道4
+  *       ShutDownSignal: 通道自动关闭源，取值范围为:
+  *                         ECCP_CHANNEL_SHUTDOWN_FORBID: 禁止自动关断
+  *                         ECCP_CHANNEL_CMP2CMP3_ACTIVE: 比较器2/3输出高电平
+  *                         ECCP_CHANNEL_BKIN_INACTIVE: ECCP_BKIN引脚上的低电平
+  *       注意：比较器3输出作为 ECCP5/9 通道 1/2/3 自动关断的触发信号(高电平关断)
+  *       		比较器 2/3 的输出作为 ECCP5/9 通道4 自动关断的触发信号(高电平关断)
+  * 返回  无。
+  */
+void
+ECCP_CHANNEL4_Shutdown_SEL (ECCP_SFRmap* ECCPx,
+                    uint32_t ShutDownSignal)
+{
+    uint32_t tmpreg = 0;
+
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_ATIM_PERIPH(ECCPx));
+    CHECK_RESTRICTION(CHECK_CHANNEL4_SHUTDOWN_SIGNAL(ShutDownSignal));
+
+
+    if (ShutDownSignal != CMP3_OUTPUT_SHUNT)
+    {
+        /* 自动关闭时，一旦关闭事件消失，PxASE位将自动清零，PWM自动重启 */
+        SFR_SET_BIT_ASM(ECCPx->PXASCTL, ECCP_PXASCTL_PXASS_POS);
+    }
+    else
+    {
+        /* 自动关闭时，PxASE由软件清零，以重启PWM */
+        SFR_CLR_BIT_ASM(ECCPx->PXASCTL, ECCP_PXASCTL_PXASS_POS);
+    }
+}
 /**
   * 描述  配置通道自动关闭源选择位。
   * 输入  ECCPx: 指向ECCP或高级定时器内存结构的指针，

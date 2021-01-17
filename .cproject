@@ -19,7 +19,7 @@
 					<folderInfo id="cdt.managedbuild.config.gnu.exe.release.311118064." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.exe.release.1713158250" name="KungFu32 Tool" superClass="cdt.managedbuild.toolchain.gnu.exe.release">
 							<targetPlatform archList="all" id="cdt.managedbuild.target.gnu.platform.exe.release.576184365" name="Release Platform" osList="solaris,linux,hpux,aix,qnx,win32" superClass="cdt.managedbuild.target.gnu.platform.exe.release"/>
-							<builder buildPath="${workspace_loc:/KF32Lxxx_StdPeriph_Lib_V2.5/Release}" id="cdt.managedbuild.target.gnu.builder.exe.release.1250636533" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="GNU Make" superClass="cdt.managedbuild.target.gnu.builder.exe.release"/>
+							<builder buildPath="${workspace_loc:/KF32Lxxx_StdPeriph_Lib_V2.6/Release}" id="cdt.managedbuild.target.gnu.builder.exe.release.1250636533" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="GNU Make" superClass="cdt.managedbuild.target.gnu.builder.exe.release"/>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.release.379866331" name="C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.release">
 								<option id="com.chipon32.chiponide.core.includepath.378974461" name="Include Path(-I)" superClass="com.chipon32.chiponide.core.includepath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
@@ -58,7 +58,7 @@
 					<folderInfo id="cdt.managedbuild.config.gnu.exe.debug.1123879748." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.exe.debug.2124616722" name="KungFu32 Tool" superClass="cdt.managedbuild.toolchain.gnu.exe.debug">
 							<targetPlatform id="cdt.managedbuild.target.gnu.platform.exe.debug.583994567" name="Debug Platform" osList="solaris,linux,hpux,aix,qnx,win32" superClass="cdt.managedbuild.target.gnu.platform.exe.debug"/>
-							<builder buildPath="${workspace_loc:/KF32Lxxx_StdPeriph_Lib_V2.5/Debug}" id="cdt.managedbuild.target.gnu.builder.exe.debug.810124411" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="GNU Make" superClass="cdt.managedbuild.target.gnu.builder.exe.debug"/>
+							<builder buildPath="${workspace_loc:/KF32Lxxx_StdPeriph_Lib_V2.6/Debug}" id="cdt.managedbuild.target.gnu.builder.exe.debug.810124411" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="GNU Make" superClass="cdt.managedbuild.target.gnu.builder.exe.debug"/>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1828548082" name="Chipon Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug">
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1900967616" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -82,7 +82,7 @@
 		<autodiscovery enabled="false" problemReportingEnabled="false" selectedProfileId=""/>
 	</storageModule>
 	<storageModule moduleId="refreshScope" versionNumber="1">
-		<resource resourceType="PROJECT" workspacePath="/KF32Axxx_StdPeriph_Lib_V2.5"/>
+		<resource resourceType="PROJECT" workspacePath="/KF32Axxx_StdPeriph_Lib_V2.6"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>

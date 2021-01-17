@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  _kf32a_basic_osc.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.5
+  * 版  本  V2.6
   * 日  期  2019-11-16
   * 描  述  该文件提供了振荡器(OSC)相关的库函数声明及相关宏定义。
   *********************************************************************
@@ -320,5 +320,6 @@ FlagStatus OSC_Get_EXTHF_INT_Flag (void);
 FlagStatus OSC_Get_EXTLF_INT_Flag (void);
 FlagStatus OSC_Get_INTHF_INT_Flag (void);
 FlagStatus OSC_Get_INTLF_INT_Flag (void);
+FlagStatus OSC_Get_LP4MIF_INT_Flag (void);
 void OSC_PLL_RST(void);
 #endif /* _KF32A_BASIC_OSC_H */

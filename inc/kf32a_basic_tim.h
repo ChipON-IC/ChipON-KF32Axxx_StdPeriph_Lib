@@ -2,7 +2,7 @@
   *********************************************************************
   * 文件名  kf32a_basic_tim.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.5
+  * 版  本  V2.6
   * 日  期  2019-11-16
   * 描  述  该文件提供了定时器外设的库函数声明及相关宏定义。
   *********************************************************************
@@ -949,7 +949,14 @@ typedef struct
                                         (((STATE) == ECCP_CHANNEL_SHUTDOWN_FORBID) \
                                         || ((STATE) == ECCP_CHANNEL_CMP2CMP3_ACTIVE)\
                                       || ((STATE) == ECCP_CHANNEL_BKIN_INACTIVE))
-
+/**
+  * 通道4比较器关闭源选择
+  */
+#define CMP3_OUTPUT_SHUNT    ((uint32_t)0x0)
+#define CMP2_OUTPUT_SHUNT    ((uint32_t)0x1)
+#define CHECK_CHANNEL4_SHUTDOWN_SIGNAL(STATE) \
+                                        (((STATE) == CMP3_OUTPUT_SHUNT) \
+                                      || ((STATE) == CMP2_OUTPUT_SHUNT))
 /**
   * 零点检测时钟
   */
@@ -1110,6 +1117,9 @@ void ECCP_Channel_Output_Mode (ECCP_SFRmap* ECCPx,
                     uint32_t Channel, uint32_t ChannelOutputMode);
 void ECCP_Channel_Work_State_Config (ECCP_SFRmap* ECCPx,
                     uint32_t Channel, uint32_t WorkingState);
+void
+ECCP_CHANNEL4_Shutdown_SEL (ECCP_SFRmap* ECCPx,
+                    uint32_t ShutDownSignal);
 FlagStatus ECCP_Get_Channel_Work_State (ECCP_SFRmap* ECCPx, uint32_t Channel);
 void ECCP_Channel_Shutdown_Signal (ECCP_SFRmap* ECCPx,
                     uint32_t Channel, uint32_t ShutDownSignal);

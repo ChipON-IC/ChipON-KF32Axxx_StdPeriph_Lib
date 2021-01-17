@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_adc.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.5
+  * 版  本  V2.6
   * 日  期  2019-11-16
   * 描  述  该文件提供了模数转换模块(ADC)的库函数声明及相关宏定义。
   *
@@ -412,6 +412,15 @@ typedef struct
                                       || ((OFFSET) == ADC_HPDOFF_2) \
                                       || ((OFFSET) == ADC_HPDOFF_3))
 
+#define ADC_HPCH0                    ((uint32_t)0x00400000)
+#define ADC_HPCH1                    ((uint32_t)0x00800000)
+#define ADC_HPCH2                    ((uint32_t)0x01000000)
+#define ADC_HPCH3                    ((uint32_t)0x02000000)
+#define CHECK_ADC_HPCH(SELECT) (((SELECT) == ADC_HPCH0) \
+                                      || ((SELECT) == ADC_HPCH1) \
+                                      || ((SELECT) == ADC_HPCH2) \
+                                      || ((SELECT) == ADC_HPCH3))
+
 /**
   * ADC_HPDATAy寄存器偏移地址
   */
@@ -520,6 +529,36 @@ typedef struct
                                       || ((MODE) == ADC_SLOW_ALTERNATELY_SYNC) \
                                       || ((MODE) == ADC_ALTERNATELY_TRIGGER))
 
+/**
+  * ADC高优先级通道外部触发事件TxCCRy
+  */
+#define ADC_HPEXTERNALTRIG_T10_CCR0     ADC_STATE_CCR5H_POS
+#define ADC_HPEXTERNALTRIG_T9_CCR1      ADC_STATE_CCR4H_POS
+#define ADC_HPEXTERNALTRIG_T9_CCR0      ADC_STATE_CCR3H_POS
+#define ADC_HPEXTERNALTRIG_T6_CCR0      ADC_STATE_CCR2H_POS
+#define ADC_HPEXTERNALTRIG_T5_CCR1      ADC_STATE_CCR1H_POS
+#define ADC_HPEXTERNALTRIG_T5_CCR0      ADC_STATE_CCR0H_POS
+#define CHECK_HPChannel_TxCCRy_Trig(SELECT)     (((SELECT) == ADC_STATE_CCR5H_POS) \
+                                      || ((SELECT) == ADC_STATE_CCR4H_POS) \
+                                      || ((SELECT) == ADC_STATE_CCR3H_POS) \
+                                      || ((SELECT) == ADC_STATE_CCR2H_POS) \
+                                      || ((SELECT) == ADC_STATE_CCR1H_POS) \
+                                      || ((SELECT) == ADC_STATE_CCR0H_POS))
+/**
+  * ADC常规优先级通道外部触发事件TxCCRy
+  */
+#define ADC_EXTERNALTRIG_T10_CCR0     ADC_STATE_CCR5N_POS
+#define ADC_EXTERNALTRIG_T9_CCR1      ADC_STATE_CCR4N_POS
+#define ADC_EXTERNALTRIG_T9_CCR0      ADC_STATE_CCR3N_POS
+#define ADC_EXTERNALTRIG_T6_CCR0      ADC_STATE_CCR2N_POS
+#define ADC_EXTERNALTRIG_T5_CCR1      ADC_STATE_CCR1N_POS
+#define ADC_EXTERNALTRIG_T5_CCR0      ADC_STATE_CCR0N_POS
+#define CHECK_RegularChannel_TxCCRy_Trig(SELECT)     (((SELECT) == ADC_STATE_CCR5N_POS) \
+                                      || ((SELECT) == ADC_STATE_CCR4N_POS) \
+                                      || ((SELECT) == ADC_STATE_CCR3N_POS) \
+                                      || ((SELECT) == ADC_STATE_CCR2N_POS) \
+                                      || ((SELECT) == ADC_STATE_CCR1N_POS) \
+                                      || ((SELECT) == ADC_STATE_CCR0N_POS))
 /**
   * ADC高优先级通道外部触发事件
   */
@@ -700,7 +739,9 @@ void ADC_Trim_Current_Intensity_Bias (ADC_SFRmap* ADCx,
 void ADC_Analog_Clock_Config (ADC_SFRmap* ADCx, uint32_t ClockSelect);
 void ADC_Data_Align_Config (ADC_SFRmap* ADCx, uint32_t DataAlign);
 void ADC_Clock_Source_Config (ADC_SFRmap* ADCx, uint32_t ClockSource);
-void ADC_DMA_Cmd (ADC_SFRmap* ADCx, FunctionalState NewState);
+void ADC_Regular_Channel_DMA_Cmd (ADC_SFRmap* ADCx, FunctionalState NewState);
+void ADC_High_Priority_Channel_DMA_Cmd (ADC_SFRmap* ADCx,
+					uint32_t HPChannel,FunctionalState NewState);
 void ADC_Double_Mode_Config (uint32_t WorkMode);
 void ADC_Reference_Voltage_Config (ADC_SFRmap* ADCx, uint32_t RefVoltage);
 void ADC_Analog_Watchdog_Channel_Config (ADC_SFRmap* ADCx, uint32_t Channel);
@@ -714,6 +755,8 @@ void ADC_External_Trig_Conv_Config (ADC_SFRmap* ADCx,
 void ADC_Regular_Channel_Config (ADC_SFRmap* ADCx,
                     uint32_t Channel, uint32_t Rank);
 void ADC_Regular_Sequencer_Length_Config (ADC_SFRmap* ADCx, uint32_t Length);
+void ADC_Regular_Channel_TxCCRy_Trig_Enable (ADC_SFRmap* ADCx,
+							 uint32_t ExternalTrigEvent, FunctionalState NewState);
 void ADC_Software_Start_Conv(ADC_SFRmap* ADCx);
 void ADC_Continuous_Mode_Cmd (ADC_SFRmap* ADCx, FunctionalState NewState);
 void ADC_Disc_Mode_Channel_Count_Config (ADC_SFRmap* ADCx, uint8_t Number);
@@ -742,4 +785,10 @@ void ADC_Set_INT_Enable (ADC_SFRmap* ADCx,
 FlagStatus ADC_Get_INT_Flag (ADC_SFRmap* ADCx, uint32_t InterruptType);
 void ADC_Clear_INT_Flag (ADC_SFRmap* ADCx, uint32_t InterruptType);
 INTStatus ADC_Get_INT_Status (ADC_SFRmap* ADCx, uint32_t InterruptType);
+void
+ADC_HPChannel_TxCCRy_Trig_Enable (ADC_SFRmap* ADCx,
+							 uint32_t HPExternalTrigEvent, FunctionalState NewState);
+void
+ADC_RegularChannel_TxCCRy_Trig_Enable (ADC_SFRmap* ADCx,
+							 uint32_t ExternalTrigEvent, FunctionalState NewState);
 #endif /* _KF32A_BASIC_ADC_H */

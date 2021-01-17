@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_adc.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.5
+  * 版  本  V2.6
   * 日  期  2019-11-16
   * 描  述  该文件提供了模数转换模块(ADC)外设功能函数，包含：
   *          + 模数转换模块(ADC)初始化函数
@@ -566,7 +566,7 @@ ADC_Clock_Source_Config (ADC_SFRmap* ADCx, uint32_t ClockSource)
   * 返回  无。
   */
 void
-ADC_DMA_Cmd (ADC_SFRmap* ADCx, FunctionalState NewState)
+ADC_Regular_Channel_DMA_Cmd (ADC_SFRmap* ADCx, FunctionalState NewState)
 {
     /* 参数校验 */
     CHECK_RESTRICTION(CHECK_ADC_ALL_PERIPH(ADCx));
@@ -575,15 +575,45 @@ ADC_DMA_Cmd (ADC_SFRmap* ADCx, FunctionalState NewState)
     if (NewState != FALSE)
     {
         /* 使用DMA模式 */
-        SFR_SET_BIT_ASM(ADCx->CTL0, ADC_CTL0_DMAEN_POS);
+        SFR_SET_BIT_ASM(ADCx->CTL0, ADC_CTL0_NDMAEN_POS);
     }
     else
     {
         /* 不使用DMA模式 */
-        SFR_CLR_BIT_ASM(ADCx->CTL0, ADC_CTL0_DMAEN_POS);
+        SFR_CLR_BIT_ASM(ADCx->CTL0, ADC_CTL0_NDMAEN_POS);
     }
 }
 
+/**
+  * 描述  配置直接存储器访问模式使能。
+  * 输入  ADCx: 指向ADC内存结构的指针，取值为ADC0_SFR~ADC2_SFR。
+  *          HPChannel: 高优先级通道选择，取值为：
+  *                        ADC_HPCH0: 高优先级通道0
+  *                        ADC_HPCH1: 高优先级通道1
+  *                        ADC_HPCH2: 高优先级通道2
+  *                        ADC_HPCH3: 高优先级通道3
+  *       NewState: 直接存储器访问模式使能状态，取值范围为TRUE 或 FALSE。
+  * 返回  无。
+  */
+void
+ADC_High_Priority_Channel_DMA_Cmd (ADC_SFRmap* ADCx,
+					uint32_t HPChannel,FunctionalState NewState)
+{
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_ADC_ALL_PERIPH(ADCx));
+    CHECK_RESTRICTION(CHECK_ADC_HPCH(HPChannel));
+    CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(NewState));
+
+
+    if (NewState != FALSE)
+    {
+    	ADCx->CTL0 |= HPChannel;
+    }
+    else
+    {
+    	ADCx->CTL0 &= ~HPChannel;
+    }
+}
 /**
   * 描述  配置双ADC模式选择。
   * 输入  WorkMode: 双ADC模式，取值范围为：
@@ -884,6 +914,45 @@ ADC_Regular_Sequencer_Length_Config (ADC_SFRmap* ADCx, uint32_t Length)
     ADCx->SCANSQ3 = SFR_Config (ADCx->SCANSQ3,
                           ~ADC_SCANSQ3_SLEN,
                           tmpreg);
+}
+
+/**
+  * 描述  配置常规优先级通道的 Tx_CCRy 触发使能。
+  * 输入  ADCx: 指向ADC内存结构的指针，取值为ADC0_SFR~ADC2_SFR。
+  *       HPExternalTrigEvent: 常规优先级通道外部触发事件选择，取值为：
+  *                              ADC_EXTERNALTRIG_T10_CCR0: 常规优先级通道的 T10_CCR0 触发使能
+  *                              ADC_EXTERNALTRIG_T9_CCR1:  常规优先级通道的 T9_CCR1 触发使能
+  *                              ADC_EXTERNALTRIG_T9_CCR0:  常规优先级通道的 T9_CCR0 触发使能
+  *                              ADC_EXTERNALTRIG_T6_CCR0:  常规优先级通道的 T6_CCR0 触发使能
+  *                              ADC_EXTERNALTRIG_T5_CCR1:  常规优先级通道的 T5_CCR1 触发使能
+  *                              ADC_EXTERNALTRIG_T5_CCR0:  常规优先级通道的 T5_CCR0 触发使能
+  *       NewState: ADC中断使能状态，取值范围为TRUE 或 FALSE。
+  * 返回  无。
+  */
+void
+ADC_Regular_Channel_TxCCRy_Trig_Enable (ADC_SFRmap* ADCx,
+							 uint32_t ExternalTrigEvent, FunctionalState NewState)
+{
+    uint32_t tmpreg = 0;
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_ADC_ALL_PERIPH(ADCx));
+    CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(NewState));
+    CHECK_RESTRICTION(CHECK_RegularChannel_TxCCRy_Trig(ExternalTrigEvent));
+
+    /* 获取触发掩码 */
+    tmpreg = ExternalTrigEvent;
+    tmpreg = (uint32_t)0x01 << tmpreg;
+
+    if (NewState != FALSE)
+    {
+        /* 使能触发 */
+        ADCx->STATE |= tmpreg;
+    }
+    else
+    {
+        /* 禁止触发 */
+        ADCx->STATE &= (~tmpreg);
+    }
 }
 
 /**

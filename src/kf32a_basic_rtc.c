@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_rtc.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.5
+  * 版  本  V2.6
   * 日  期  2019-11-16
   * 描  述  该文件提供了实时时钟(RTC)相关的功能函数，包含：
   *          + 实时时钟(RTC)功能初始化函数
@@ -96,8 +96,15 @@ RTC_Configuration (uint32_t TimeFormat, RTC_InitTypeDef * rtcInitStruct)
         }
         else
         {
-            rtcInitStruct->m_TimeStruct.m_AMPM = RTC_TIME_AM;
             CHECK_RESTRICTION(CHECK_RTC_HOUR24(rtcInitStruct->m_TimeStruct.m_Hours));
+            if(rtcInitStruct->m_TimeStruct.m_Hours>=12)
+            {
+                rtcInitStruct->m_TimeStruct.m_AMPM = RTC_TIME_PM;
+            }
+            else
+            {
+                rtcInitStruct->m_TimeStruct.m_AMPM = RTC_TIME_AM;
+            }
         }
         CHECK_RESTRICTION(CHECK_RTC_MINUTES(rtcInitStruct->m_TimeStruct.m_Minutes));
         CHECK_RESTRICTION(CHECK_RTC_SECONDS(rtcInitStruct->m_TimeStruct.m_Seconds));
@@ -116,9 +123,16 @@ RTC_Configuration (uint32_t TimeFormat, RTC_InitTypeDef * rtcInitStruct)
         }
         else
         {
-            rtcInitStruct->m_TimeStruct.m_AMPM = RTC_TIME_AM;
             CHECK_RESTRICTION(CHECK_RTC_HOUR24( \
                         RTC_Bcd_To_Byte(rtcInitStruct->m_TimeStruct.m_Hours)));
+            if(rtcInitStruct->m_TimeStruct.m_Hours>=12)
+            {
+                rtcInitStruct->m_TimeStruct.m_AMPM = RTC_TIME_PM;
+            }
+            else
+            {
+                rtcInitStruct->m_TimeStruct.m_AMPM = RTC_TIME_AM;
+            }
         }
         CHECK_RESTRICTION(CHECK_RTC_MINUTES( \
                         RTC_Bcd_To_Byte(rtcInitStruct->m_TimeStruct.m_Minutes)));
@@ -550,6 +564,37 @@ RTC_Time_Tick_Output_Enable (FunctionalState NewState)
 }
 
 /**
+  * 描述  设置时间戳通道使能。
+  * 输入  TimeStampChannel: 时间戳通道，取值为：
+  *                    RTC_TIME_STAMP_CHANNEL0: RTC_TS引脚
+  *                    RTC_TIME_STAMP_CHANNEL1: WKUP1引脚
+  *                    RTC_TIME_STAMP_CHANNEL2: WKUP2引脚
+  *                    RTC_TIME_STAMP_CHANNEL3: WKUP3引脚
+  *                    RTC_TIME_STAMP_CHANNEL4: WKUP4引脚
+  *                    RTC_TIME_STAMP_CHANNEL5: WKUP5引脚
+  *                    NewState: RTC的时间戳功能使能配置，取值为TRUE 或 FALSE。
+  * 返回  无。
+  */
+void
+RTC_Time_Stamp_Channel_Enable (uint32_t TimeStampChannel,FunctionalState NewState)
+{
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_RTC_TIME_STAMP_CHANNEL(TimeStampChannel));
+    CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(NewState));
+
+    /*---------------- 设置RTC_CR寄存器RTCTSCH位 ----------------*/
+    if (NewState != FALSE)
+    {
+    	RTC_CR |= TimeStampChannel;
+    }
+    else
+    {
+
+    	RTC_CR &= ~TimeStampChannel;
+    }
+}
+
+/**
   * 描述  设置时间戳触发沿。
   * 输入  TimeStamp: 时间戳触发沿，取值为：
   *                    RTC_TIME_STAMP_RISE: 上升沿触发
@@ -670,20 +715,6 @@ RTC_Time_Tick_Config (uint32_t Calibration)
     RTC_CR = SFR_Config (RTC_CR, ~RTC_CR_RTCTT, Calibration);
 }
 
-/**
-  * 描述  启动实时时钟。
-  * 输入  无。
-  * 返回  无。
-  */
-void
-RTC_Start_Config (void)
-{
-    uint32_t tmpreg = 0;
-
-    /*---------------- 配置RTC_CR寄存器RTCSRT位 ----------------*/
-    tmpreg = 0x55 << RTC_CR_RTCSRT0_POS;
-    RTC_CR = SFR_Config (RTC_CR, ~RTC_CR_RTCSRT, tmpreg);
-}
 
 /**
   * 描述  初始化实时时钟模块。

@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_gptim.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.5
+  * 版  本  V2.6
   * 日  期  2019-11-16
   * 描  述  该文件提供了通用定时器外设功能函数，包含：
   *          + 通用定时器(GPTIM)初始化及配置函数定义
@@ -919,6 +919,7 @@ GPTIM_Clear_Overflow_INT_Flag (GPTIM_SFRmap* GPTIMx)
   *               或CCP0_SFR/CCP1_SFR/CCP2_SFR/CCP3_SFR/CCP4_SFR/
   *               CCP18_SFR/CCP19_SFR/CCP20_SFR/CCP21_SFR/CCP22_SFR/CCP23_SFR。
   * 返回  无
+  * 特殊说明：清除该标志位需在使能对应定时器的情况下进行，否则会导致清除失败。
   */
 void
 GPTIM_Clear_Updata_INT_Flag (GPTIM_SFRmap* GPTIMx)

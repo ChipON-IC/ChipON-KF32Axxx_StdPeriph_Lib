@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_dma.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.5
+  * 版  本  V2.6
   * 日  期  2019-11-16
   * 描  述  该文件提供了DMA模块(DMA)相关的功能函数，包含：
   *          + DMA模块(DMA)初始化函数
@@ -515,6 +515,41 @@ DMA_Transfer_Mode_Config (DMA_SFRmap* DMAx,
     }
 }
 
+/**
+  * 描述  配置DMA通道单次触发模式使能。
+  * 输入  DMAx: 指向DMA内存结构的指针，取值为DMA0_SFR和DMA1_SFR。
+  *       Channel: DMA通道选择，取值范围为:
+  *                  DMA_CHANNEL_1: 通道1
+  *                  DMA_CHANNEL_2: 通道2
+  *                  DMA_CHANNEL_3: 通道3
+  *                  DMA_CHANNEL_4: 通道4
+  *                  DMA_CHANNEL_5: 通道5
+  *                  DMA_CHANNEL_6: 通道6
+  *                  DMA_CHANNEL_7: 通道7
+  *       NewState: DMA通道Channel使能状态，取值为TRUE 或 FALSE。
+  * 返回  无。
+  */
+void
+DMA_Oneshot_Enable (DMA_SFRmap* DMAx,
+                    uint32_t Channel, FunctionalState NewState)
+{
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_DMA_ALL_PERIPH(DMAx));
+    CHECK_RESTRICTION(CHECK_DMA_CHANNEL(Channel));
+    CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(NewState));
+
+    /*---------------- 设置DMA_CTLR寄存器DMAEN位 ----------------*/
+    if (NewState != FALSE)
+    {
+        /* 使能DMA单次触发 */
+        SFR_SET_BIT_ASM(DMAx->CTLR[Channel], DMA_CTLR_ONESHOT_POS);
+    }
+    else
+    {
+        /* 未使能DMA单次触发 */
+        SFR_CLR_BIT_ASM(DMAx->CTLR[Channel], DMA_CTLR_ONESHOT_POS);
+    }
+}
 /**
   * 描述  配置DMA通道Channel使能。
   * 输入  DMAx: 指向DMA内存结构的指针，取值为DMA0_SFR和DMA1_SFR。

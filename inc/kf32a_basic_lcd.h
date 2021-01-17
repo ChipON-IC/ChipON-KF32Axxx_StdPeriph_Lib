@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_lcd.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.5
+  * 版  本  V2.6
   * 日  期  2019-11-16
   * 描  述  该文件提供了液晶显示(LCD)相关功能函数声明及相关宏定义。
   *********************************************************************
@@ -191,7 +191,7 @@ typedef struct
 #define LCD_WORK_VS_STOP_8_8            ((uint32_t)0<<LCD_PTL_IF0_POS)
 #define LCD_WORK_VS_STOP_7_9            ((uint32_t)1<<LCD_PTL_IF0_POS)
 #define LCD_WORK_VS_STOP_6_10           ((uint32_t)2<<LCD_PTL_IF0_POS)
-#define LCD_WORK_VS_STOP_5_10           ((uint32_t)3<<LCD_PTL_IF0_POS)
+#define LCD_WORK_VS_STOP_5_11           ((uint32_t)3<<LCD_PTL_IF0_POS)
 #define LCD_WORK_VS_STOP_4_12           ((uint32_t)4<<LCD_PTL_IF0_POS)
 #define LCD_WORK_VS_STOP_3_13           ((uint32_t)5<<LCD_PTL_IF0_POS)
 #define LCD_WORK_VS_STOP_2_14           ((uint32_t)6<<LCD_PTL_IF0_POS)
@@ -199,7 +199,7 @@ typedef struct
 #define CHECK_LCD_WORK_VS_STOP(VS)      (((VS) == LCD_WORK_VS_STOP_8_8) \
                                       || ((VS) == LCD_WORK_VS_STOP_7_9) \
                                       || ((VS) == LCD_WORK_VS_STOP_6_10) \
-                                      || ((VS) == LCD_WORK_VS_STOP_5_10) \
+                                      || ((VS) == LCD_WORK_VS_STOP_5_11) \
                                       || ((VS) == LCD_WORK_VS_STOP_4_12) \
                                       || ((VS) == LCD_WORK_VS_STOP_3_13) \
                                       || ((VS) == LCD_WORK_VS_STOP_2_14) \

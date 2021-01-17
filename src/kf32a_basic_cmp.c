@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_cmp.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.5
+  * 版  本  V2.6
   * 日  期  2019-11-16
   * 描  述  该文件提供了CMP外设功能函数，包含：
   *          + CMP外设初始化及配置函数
@@ -470,6 +470,7 @@ CMP2_NEGATIVE_INPUT_SELECT (uint32_t Select)
 /**
   * 描述  CMP3正端输入端口信号选择。
   * 输入选择:
+  *  		  CMP3_PositiveINPUT_PIN_OP2OUT
   *           CMP3_PositiveINPUT_PIN_PA0
   *           CMP3_PositiveINPUT_PIN_PA9
   *           CMP3_PositiveINPUT_PIN_PB2
@@ -485,10 +486,19 @@ CMP3_POSITIVE_INPUT_SELECT (uint32_t Select)
 {
     /* 参数校验 */
     CHECK_RESTRICTION(CHECK_CMP3_PositiveINPUT_PIN(Select));
+
+    if(Select==CMP3_PositiveINPUT_PIN_OP2OUT)
+    {
+    	SFR_SET_BIT_ASM(CMP3_SFR->CTL, CMP_CTL3_PSEL_POS);
+    }
+    else
+    {
     /*------------- 设置CMP_CTL3寄存器PMOD位 -------------*/
+    SFR_CLR_BIT_ASM(CMP3_SFR->CTL, CMP_CTL3_PSEL_POS);
     CMP_CTL3 = SFR_Config (CMP_CTL3,
                                ~CMP_CTL3_PMOD,
                                Select);
+    }
 }
 /**
   * 描述  CMP3负端输入端口信号选择。
@@ -522,7 +532,7 @@ CMP3_NEGATIVE_INPUT_SELECT (uint32_t Select)
   * 返回  无。
   */
 void
-CMP0_ONPUT_POL_SELECT (uint32_t Select)
+CMP0_OUTPUT_POL_SELECT (uint32_t Select)
 {
     /* 参数校验 */
     CHECK_RESTRICTION(CHECK_CMP0_OUTPUT(Select));
@@ -539,7 +549,7 @@ CMP0_ONPUT_POL_SELECT (uint32_t Select)
   * 返回  无。
   */
 void
-CMP1_ONPUT_POL_SELECT (uint32_t Select)
+CMP1_OUTPUT_POL_SELECT (uint32_t Select)
 {
     /* 参数校验 */
     CHECK_RESTRICTION(CHECK_CMP1_OUTPUT(Select));
@@ -556,7 +566,7 @@ CMP1_ONPUT_POL_SELECT (uint32_t Select)
   * 返回  无。
   */
 void
-CMP2_ONPUT_POL_SELECT (uint32_t Select)
+CMP2_OUTPUT_POL_SELECT (uint32_t Select)
 {
     /* 参数校验 */
     CHECK_RESTRICTION(CHECK_CMP2_OUTPUT(Select));
@@ -573,13 +583,33 @@ CMP2_ONPUT_POL_SELECT (uint32_t Select)
   * 返回  无。
   */
 void
-CMP3_ONPUT_POL_SELECT (uint32_t Select)
+CMP3_OUTPUT_POL_SELECT (uint32_t Select)
 {
     /* 参数校验 */
     CHECK_RESTRICTION(CHECK_CMP3_OUTPUT(Select));
     /*------------- 设置CMP_CTL2寄存器POL位 -------------*/
     CMP_CTL3 = SFR_Config (CMP_CTL3,
                                ~CMP_CTL3_POL,
+                               Select);
+}
+
+/**
+  * 描述  CMP输出选择。
+  * 输入选择:
+  * 		  NONE
+  *           CMP0_OUTPUT
+  *           CMP1_OUTPUT
+  *           CMP2_OUTPUT
+  * 返回  无。
+  */
+void
+CMP_OUTPUT_SELECT (uint32_t Select)
+{
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_CMP_OUTPUT(Select));
+    /*------------- 设置CMP_CTL2寄存器POL位 -------------*/
+    CMP_CTL4 = SFR_Config (CMP_CTL4,
+                               ~CMP_CTL4_CMPOUT,
                                Select);
 }
 /**

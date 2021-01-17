@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_rtc.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.5
+  * 版  本  V2.6
   * 日  期  2019-11-16
   * 描  述  该文件提供了实时时钟(RTC)相关功能函数声明及相关宏定义。
   *********************************************************************
@@ -82,6 +82,21 @@ typedef struct
                                    取值为TRUE或FALSE。*/
 }RTC_AlarmTypeDef;
 
+/**
+  * RTC时间戳通道
+  */
+#define RTC_TIME_STAMP_CHANNEL0               ((uint32_t)1<<RTC_CR_RTCTSCH0_POS)
+#define RTC_TIME_STAMP_CHANNEL1               ((uint32_t)1<<RTC_CR_RTCTSCH1_POS)
+#define RTC_TIME_STAMP_CHANNEL2               ((uint32_t)1<<RTC_CR_RTCTSCH2_POS)
+#define RTC_TIME_STAMP_CHANNEL3       		  ((uint32_t)1<<RTC_CR_RTCTSCH3_POS)
+#define RTC_TIME_STAMP_CHANNEL4       		  ((uint32_t)1<<RTC_CR_RTCTSCH4_POS)
+#define RTC_TIME_STAMP_CHANNEL5       		  ((uint32_t)1<<RTC_CR_RTCTSCH5_POS)
+#define CHECK_RTC_TIME_STAMP_CHANNEL(SEL)         (((SEL) == RTC_TIME_STAMP_CHANNEL0) \
+												|| ((SEL) == RTC_TIME_STAMP_CHANNEL1) \
+												|| ((SEL) == RTC_TIME_STAMP_CHANNEL2) \
+												|| ((SEL) == RTC_TIME_STAMP_CHANNEL3) \
+												|| ((SEL) == RTC_TIME_STAMP_CHANNEL4) \
+												|| ((SEL) == RTC_TIME_STAMP_CHANNEL5))
 
 /**
   * RTC时钟源
@@ -144,7 +159,7 @@ typedef struct
 #define RTC_WEEKDAY_THURSDAY_BCD        ((uint8_t)0x04)
 #define RTC_WEEKDAY_FRIDAY_BCD          ((uint8_t)0x05)
 #define RTC_WEEKDAY_SATURDAY_BCD        ((uint8_t)0x06)
-#define RTC_WEEKDAY_SUNDAY_BCD          ((uint8_t)0x07)
+#define RTC_WEEKDAY_SUNDAY_BCD          ((uint8_t)0x00)
 
 #define RTC_WEEKDAY_MONDAY_DEC          ((uint8_t)0x01)
 #define RTC_WEEKDAY_TUESDAY_DEC         ((uint8_t)0x02)
@@ -152,7 +167,7 @@ typedef struct
 #define RTC_WEEKDAY_THURSDAY_DEC        ((uint8_t)0x04)
 #define RTC_WEEKDAY_FRIDAY_DEC          ((uint8_t)0x05)
 #define RTC_WEEKDAY_SATURDAY_DEC        ((uint8_t)0x06)
-#define RTC_WEEKDAY_SUNDAY_DEC          ((uint8_t)0x07)
+#define RTC_WEEKDAY_SUNDAY_DEC          ((uint8_t)0x00)
 #define CHECK_RTC_WEEKDAY(DAY)          (((DAY) == RTC_WEEKDAY_MONDAY_BCD) \
                                       || ((DAY) == RTC_WEEKDAY_TUESDAY_BCD) \
                                       || ((DAY) == RTC_WEEKDAY_WEDNESDAY_BCD) \
@@ -289,12 +304,12 @@ void RTC_Alarm_Struct_Init (RTC_AlarmTypeDef* rtcAlarmInitStruct);
 /* 实时时钟(RTC)控制功能函数定义********************************************/
 void RTC_Clock_Calibration_Config (int8_t Calibration);
 void RTC_Time_Tick_Output_Enable (FunctionalState NewState);
+void RTC_Time_Stamp_Channel_Enable (uint32_t TimeStampChannel,FunctionalState NewState);
 void RTC_Time_Stamp_Edge_Config (uint32_t TimeStamp);
 void RTC_Time_Stamp_Edge_Enable (FunctionalState NewState);
 void RTC_Add_One_Hour_Enable (FunctionalState NewState);
 void RTC_Sub_One_Hour_Enable (FunctionalState NewState);
 void RTC_Time_Tick_Config (uint32_t Calibration);
-void RTC_Start_Config (void);
 void RTC_Reset_Config (void);
 FlagStatus RTC_Get_Leap_Year_Flag (void);
 void RTC_Hour_Format_Config (uint32_t HourFormat);

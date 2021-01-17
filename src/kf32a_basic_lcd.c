@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_lcd.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.5
+  * 版  本  V2.6
   * 日  期  2019-11-16
   * 描  述  该文件提供了液晶显示(LCD)相关的功能函数，包含：
   *          + 液晶显示(LCD)初始化函数
@@ -578,7 +578,7 @@ LCD_Time_Slice_Config (uint32_t TimeSlice)
   *                   LCD_WORK_VS_STOP_8_8: LCD工作时间和关闭时间的比例为8:8
   *                   LCD_WORK_VS_STOP_7_9: LCD工作时间和关闭时间的比例为7:9
   *                   LCD_WORK_VS_STOP_6_10: LCD工作时间和关闭时间的比例为6:10
-  *                   LCD_WORK_VS_STOP_5_10: LCD工作时间和关闭时间的比例为5:11
+  *                   LCD_WORK_VS_STOP_5_11: LCD工作时间和关闭时间的比例为5:11
   *                   LCD_WORK_VS_STOP_4_12: LCD工作时间和关闭时间的比例为4:12
   *                   LCD_WORK_VS_STOP_3_13: LCD工作时间和关闭时间的比例为3:13
   *                   LCD_WORK_VS_STOP_2_14: LCD工作时间和关闭时间的比例为2:14

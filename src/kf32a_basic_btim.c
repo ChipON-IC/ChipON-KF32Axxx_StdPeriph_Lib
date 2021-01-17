@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_btim.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.5
+  * 版  本  V2.6
   * 日  期  2019-11-16
   * 描  述  该文件提供了定时器外设功能函数，包含：
   *          + 定时器外设复位函数定义
@@ -1254,6 +1254,7 @@ BTIM_Clear_Trigger_INT_Flag (BTIM_SFRmap* BTIMx)
   * 描述  清除Tx更新事件中断标志。
   * 输入  BTIMx: 指向定时器内存结构的指针，取值T14_SFR、T15_SFR。
   * 返回  无
+  * 特殊说明：清除该标志位需在使能对应定时器的情况下进行，否则会导致清除失败。
   */
 void
 BTIM_Clear_Updata_INT_Flag (BTIM_SFRmap* BTIMx)
