@@ -1,0 +1,18 @@
+Change Log
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+★ V2.2  2020-03-10
+
+●13 修改了整个GPIO_Output_LED
+●12 system_init.c种SystemInit函数添加FLASH_CFG=0xC3配置,修改FLASH的读取周期为4周期
+●11 修改了整个GPIO_Output_LED
+●10 更新IIC程序,更新IIC_DMA程序
+●9 更新FLASH程序,增加byte，word，double word的读写操作。删除老的单子（64bit）读写问题代码
+●8 为方便更新，标准库文件添加放到客户端处理
+●7 外部中断源的宏定义增加
+●6 INT_External_Source_Enable (uint32_t EintNum, uint32_t PeripheralSource)函数上的注释增加
+●5 修改TOUCH的位错误CT_CMPCFG_CMPPHASE_POS等16-27改为15-26
+●4 115200 z:8  x:1  y:15
+●3 GPIO_Pin_RMP_Config(GPIOF_SFR,GPIO_Pin_Num_1,GPIO_RMP_AF7_SPI1);//重映射为SPI3
+●2 增加#ifdef USE_CHECK_ASSERT
+●1 增加#ifdef Perph_lcd_close
