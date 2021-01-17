@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_pm.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.2
+  * 版  本  V2.3
   * 日  期  2019-11-16
   * 描  述  该文件提供了电源管理(PM)相关的功能函数，包含：
   *          + 电源管理(PM)控制功能函数
@@ -237,30 +237,57 @@ PM_Independent_Watchdog_Reset_Config (uint32_t IWDTReset)
 }
 
 /**
-  * 描述  设置SRAM的B区在standby模式下工作配置。
-  * 输入  WorkMode: SRAM的B区在standby模式下工作配置，取值为:
-  *                   PM_SRAM_IN_STANDBY_POWER_DOWN: SRAM的B区在standby模式下掉电
-  *                   PM_SRAM_IN_STANDBY_KEEP_DATA: SRAM的B区在standby模式下保持数据
+  * 描述  设置SRAM的A区在standby模式下工作配置。
+  * 输入  WorkMode: SRAM的A区在standby模式下工作配置，取值为:
+  *                   PM_SRAMA_IN_STANDBY_POWER_DOWN: SRAM的A区在standby模式下掉电
+  *                   PM_SRAMA_IN_STANDBY_KEEP_DATA: SRAM的A区在standby模式下保持数据
   * 返回  无。
   */
 void
-PM_SRAM_In_Standby_Work_Mode_Config (uint32_t WorkMode)
+PM_SRAMA_In_Standby_Work_Mode_Config (uint32_t WorkMode)
 {
     /* 参数校验 */
-    CHECK_RESTRICTION(CHECK_PM_SRAM_IN_STANDBY(WorkMode));
+    CHECK_RESTRICTION(CHECK_PM_SRAMA_IN_STANDBY(WorkMode));
 
-    /*---------------- 设置PM_CTL0寄存器SRAMBSEL位 ----------------*/
-    if (WorkMode != PM_SRAM_IN_STANDBY_POWER_DOWN)
+    /*---------------- 设置PM_CTL0寄存器SRAMASEL位 ----------------*/
+    if (WorkMode != PM_SRAMA_IN_STANDBY_POWER_DOWN)
+    {
+        /* SRAM的A区在standby模式下保持数据 */
+        SFR_SET_BIT_ASM(PM_CTL0, PM_CTL0_SRAMASEL_POS);
+    }
+    else
+    {
+        /* SRAM的A区在standby模式下掉电 */
+        SFR_CLR_BIT_ASM(PM_CTL0, PM_CTL0_SRAMASEL_POS);
+    }
+}
+
+/**
+  * 描述  设置LPRAM在standby模式下工作配置。
+  * 输入  WorkMode: LPRAM在standby模式下工作配置，取值为:
+  *                   PM_LPRAM_IN_STANDBY_POWER_DOWN: LPRAM在standby模式下掉电
+  *                   PM_LPRAM_IN_STANDBY_KEEP_DATA: LPRAM在standby模式下保持数据
+  * 返回  无。
+  */
+void
+PM_LPRAM_In_Standby_Work_Mode_Config (uint32_t WorkMode)
+{
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_PM_LPSRAM_IN_STANDBY(WorkMode));
+
+    /*---------------- 设置PM_CTL0寄存器SRAMASEL位 ----------------*/
+    if (WorkMode != PM_LPRAM_IN_STANDBY_POWER_DOWN)
     {
         /* SRAM的B区在standby模式下保持数据 */
-        SFR_SET_BIT_ASM(PM_CTL0, PM_CTL0_SRAMBSEL_POS);
+        SFR_SET_BIT_ASM(PM_CTL0, PM_CTL0_LPSRAMSEL_POS);
     }
     else
     {
         /* SRAM的B区在standby模式下掉电 */
-        SFR_CLR_BIT_ASM(PM_CTL0, PM_CTL0_SRAMBSEL_POS);
+        SFR_CLR_BIT_ASM(PM_CTL0, PM_CTL0_LPSRAMSEL_POS);
     }
 }
+
 
 /**
   * 描述  设置BKP_POR延时时间。
@@ -339,6 +366,54 @@ PM_Peripheral_IO_Port_Config (uint32_t PeripheralPort)
         SFR_CLR_BIT_ASM(PM_CTL0, PM_CTL0_PHERIIOSEL_POS);
     }
 }
+/**
+  * 描述  低功耗模式下锁存内部高频晶振校准值
+  * 输入  NewState: HSI内部高频晶振校准值锁存位,取值为TRUE 或 FALSE
+  * 返回  无
+  */
+void
+PM_OCAL0LOCK_Enable (FunctionalState NewState)
+{
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(NewState));
+
+    /*---------------- 设置PM_CTL0寄存器OCALLOCK位 ----------------*/
+    if (NewState != FALSE)
+    {
+        /* 锁存晶振校准值 */
+        SFR_SET_BIT_ASM(PM_CTL0, PM_CTL0_OCAL0LOCK_POS);
+    }
+    else
+    {
+        /* 不锁存晶振校准值 */
+        SFR_CLR_BIT_ASM(PM_CTL0, PM_CTL0_OCAL0LOCK_POS);
+    }
+}
+
+/**
+  * 描述  低功耗模式下MEMM数据保持使能
+  * 输入  NewState: MEMM数据保持使能位,取值为TRUE 或 FALSE
+  * 返回  无
+  */
+void
+PM_MEMSEL_Enable (FunctionalState NewState)
+{
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(NewState));
+
+    /*---------------- 设置PM_CTL0寄存器OCALLOCK位 ----------------*/
+    if (NewState != FALSE)
+    {
+        /* 锁存晶振校准值 */
+        SFR_SET_BIT_ASM(PM_CTL0, PM_CTL0_MEMSEL_POS);
+    }
+    else
+    {
+        /* 不锁存晶振校准值 */
+        SFR_CLR_BIT_ASM(PM_CTL0, PM_CTL0_MEMSEL_POS);
+    }
+}
+
 
 /**
   * 描述  设置FLASH供电电源软件关断使能。

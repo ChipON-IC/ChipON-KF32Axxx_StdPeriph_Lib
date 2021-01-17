@@ -2,7 +2,7 @@
   *********************************************************************
   * 文件名 KF32A_BASIC.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.2
+  * 版  本  V2.3
   * 日  期  2019-11-16
   * 描  述  KF32A系列外设访问入口文件，包含：
   *          - 所有外设的内存结构
@@ -257,7 +257,7 @@ typedef struct GPIO_MemMap {
 #define GPIOE_LOCK                      (GPIOE_SFR->LOCK)
 #define GPIOE_RMPL                      (GPIOE_SFR->RMP[0])
 #define GPIOE_RMPH                      (GPIOE_SFR->RMP[1])
-#define GPIOE_CTMDCTL                   (GPIOD_SFR->CTMDCTL[0])
+#define GPIOE_CTMDCTL                   (GPIOE_SFR->CTMDCTL[0])
 #define GPIOF_PIR                       (GPIOF_SFR->PIR)
 #define GPIOF_POR                       (GPIOF_SFR->POR)
 #define GPIOF_PUR                       (GPIOF_SFR->PUR)
@@ -973,7 +973,7 @@ typedef struct GPIO_MemMap {
 #define CTMDDCTL_CTDMODE3_0         	((uint32_t)1<<(CTMDDCTL_CTDMODE3_0_POS))
 #define CTMDDCTL_CTDMODE3_1         	((uint32_t)1<<(CTMDDCTL_CTDMODE3_1_POS))
 #define CTMDDCTL_CTDMODE3_2         	((uint32_t)1<<(CTMDDCTL_CTDMODE3_2_POS))
-#define CTMDDCTL_CTDMODE4           	((uint32_t)0x7<<(CTMDACTL0_CTDMODE4_0_POS))
+#define CTMDDCTL_CTDMODE4           	((uint32_t)0x7<<(CTMDDCTL0_CTDMODE4_0_POS))
 #define CTMDDCTL_CTDMODE4_0         	((uint32_t)1<<(CTMDDCTL_CTDMODE4_0_POS))
 #define CTMDDCTL_CTDMODE4_1         	((uint32_t)1<<(CTMDDCTL_CTDMODE4_1_POS))
 #define CTMDDCTL_CTDMODE4_2         	((uint32_t)1<<(CTMDDCTL_CTDMODE4_2_POS))
@@ -10077,6 +10077,7 @@ typedef struct USART_MemMap {
 #define USART_CTLR_CTSEN_POS            (24)
 #define USART_CTLR_RTSEN_POS            (25)
 #define USART_CTLR_IRDAEN_POS           (29)
+#define USART_CTLR_RESHD_POS            (30)
 #define USART_CTLR_SLMEN_POS            (31)
 #define USART_CTLR_USARTEN              ((uint32_t)1<<(USART_CTLR_USARTEN_POS))
 #define USART_CTLR_BRCKS                ((uint32_t)3<<(USART_CTLR_BRCKS0_POS))
@@ -10101,6 +10102,7 @@ typedef struct USART_MemMap {
 #define USART_CTLR_CTSEN                ((uint32_t)1<<(USART_CTLR_CTSEN_POS))
 #define USART_CTLR_RTSEN                ((uint32_t)1<<(USART_CTLR_RTSEN_POS))
 #define USART_CTLR_IRDAEN               ((uint32_t)1<<(USART_CTLR_IRDAEN_POS))
+#define USART_CTLR_RESHD                ((uint32_t)1<<(USART_CTLR_RESHD_POS))
 #define USART_CTLR_SLMEN                ((uint32_t)1<<(USART_CTLR_SLMEN_POS))
 
 /* USART_STR 位域*/
@@ -11194,7 +11196,7 @@ typedef struct CT_MemMap {
 #define CT_SWCTL2_SWHMBB_POS             (3)
 #define CT_SWCTL2_SWHMCA_POS             (4)
 #define CT_SWCTL2_SWHMCB_POS             (5)
-#define CT_SWCTL2_SWHMCC_POS             (6)
+#define CT_SWCTL2_SWHMCG_POS             (6)
 #define CT_SWCTL2_SWHMTA0_POS            (7)
 #define CT_SWCTL2_SWHMTA1_POS            (8)
 #define CT_SWCTL2_SWHNVH_POS             (9)
@@ -11225,7 +11227,7 @@ typedef struct CT_MemMap {
 #define CT_SWCTL2_SWHMBB                 ((uint32_t)1<<(CT_SWCTL2_SWHMBB_POS))
 #define CT_SWCTL2_SWHMCA                 ((uint32_t)1<<(CT_SWCTL2_SWHMCA_POS))
 #define CT_SWCTL2_SWHMCB                 ((uint32_t)1<<(CT_SWCTL2_SWHMCB_POS))
-#define CT_SWCTL2_SWHMCC                 ((uint32_t)1<<(CT_SWCTL2_SWHMCC_POS))
+#define CT_SWCTL2_SWHMCG                 ((uint32_t)1<<(CT_SWCTL2_SWHMCG_POS))
 #define CT_SWCTL2_SWHMTA                 ((uint32_t)0x3<<(CT_SWCTL2_SWHMTA0_POS))
 #define CT_SWCTL2_SWHMTA0                ((uint32_t)1<<(CT_SWCTL2_SWHMTA0_POS))
 #define CT_SWCTL2_SWHMTA1                ((uint32_t)1<<(CT_SWCTL2_SWHMTA1_POS))
@@ -12728,8 +12730,8 @@ typedef struct PM_MemMap {
 #define PM_CTL0_IWDTRMSEL_POS           (16)
 #define PM_CTL0_LSECONF_POS             (17)
 #define PM_CTL0_LP4MEN_POS              (18)
-#define PM_CTL0_SRAMCSEL_POS            (19)
-#define PM_CTL0_SRAMBSEL_POS            (20)
+#define PM_CTL0_LPSRAMSEL_POS            (19)
+#define PM_CTL0_SRAMASEL_POS            (20)
 #define PM_CTL0_IWDTCLR_POS             (21)
 #define PM_CTL0_BKPREGCLR_POS           (22)
 #define PM_CTL0_LPBGON_POS              (23)
@@ -12760,8 +12762,8 @@ typedef struct PM_MemMap {
 #define PM_CTL0_IWDTRMSEL               ((uint32_t)1<<(PM_CTL0_IWDTRMSEL_POS))
 #define PM_CTL0_LSECONF                 ((uint32_t)1<<(PM_CTL0_LSECONF_POS))
 #define PM_CTL0_LP4MEN                  ((uint32_t)1<<(PM_CTL0_LP4MEN_POS))
-#define PM_CTL0_SRAMCSEL                ((uint32_t)1<<(PM_CTL0_SRAMCSEL_POS))
-#define PM_CTL0_SRAMBSEL                ((uint32_t)1<<(PM_CTL0_SRAMBSEL_POS))
+#define PM_CTL0_LPSRAMSEL               ((uint32_t)1<<(PM_CTL0_LPSRAMSEL_POS))
+#define PM_CTL0_SRAMASEL                ((uint32_t)1<<(PM_CTL0_SRAMASEL_POS))
 #define PM_CTL0_IWDTCLR                 ((uint32_t)1<<(PM_CTL0_IWDTCLR_POS))
 #define PM_CTL0_BKPREGCLR               ((uint32_t)1<<(PM_CTL0_BKPREGCLR_POS))
 #define PM_CTL0_LPBGON                  ((uint32_t)1<<(PM_CTL0_LPBGON_POS))

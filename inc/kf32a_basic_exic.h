@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_exic.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.2
+  * 版  本  V2.3
   * 日  期  2019-11-16
   * 描述    该文件用于EXIC模块外设的库函数声明及相关宏定义。
   *
@@ -15,7 +15,7 @@
 
 #include "KF32A_BASIC.h"
 
-#ifdef KF32A_Periph_exic
+
 /**
   * 描述  EXIC接口模块配置信息结构体
   */
@@ -122,6 +122,7 @@ typedef struct
 										||((SEL) == EXIC_PULSEWIDTH_16384Tclk) \
 										||((SEL) == EXIC_PULSEWIDTH_32768Tclk) )
 
+#ifdef KF32A_Periph_exic
 void EXIC_Struct_Init (EXIC_InitTypeDef* EXICInitStruct);
 uint32_t EXIC_Read_Buff (void);
 void EXIC_Write_Buff (uint32_t DATA);

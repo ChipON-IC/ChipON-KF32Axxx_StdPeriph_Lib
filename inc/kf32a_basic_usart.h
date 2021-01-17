@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_usart.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.2
+  * 版  本  V2.3
   * 日  期  2019-11-16
   * 描述    该文件用于USART外设的库函数声明及相关宏定义。
   *
@@ -419,5 +419,8 @@ void USART_Clear_Receive_ERROR_INT_Flag (USART_SFRmap* USARTx);
 void USART_Clear_CTS_INT_Flag (USART_SFRmap* USARTx);
 void USART_Clear_Receive_BUFR_INT_Flag (USART_SFRmap* USARTx);
 void USART_Clear_Transmit_BUFR_INT_Flag (USART_SFRmap* USARTx);
+FlagStatus USART_Get_WUEN_Flag (USART_SFRmap* USARTx);
+FlagStatus USART_Get_Auto_BaudRate_Detection_Flag(USART_SFRmap* USARTx);
+void USART_RESHD_Enable (USART_SFRmap* USARTx, FunctionalState NewState);
 
 #endif /* _KF32A_BASIC_USART_H */

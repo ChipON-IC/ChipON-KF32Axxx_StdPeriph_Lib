@@ -1,4 +1,4 @@
-#Wed Feb 26 16:28:35 CST 2020
+#Sat Apr 11 17:56:38 CST 2020
 eclipse.preferences.version=1
 kf32target/ChipPower=3
 kf32target/IspMode=78563412
@@ -10,7 +10,7 @@ kf32target/debugSpeed=60
 kf32target/dflashuse=-1
 kf32target/dramuse=-1
 kf32target/maintimeout=20
-kf32target/rflashuse=3160
+kf32target/rflashuse=3172
 kf32target/rramuse=1488
 kf32target/stepintimeout=1
 kf32target/stepouttimeout=2

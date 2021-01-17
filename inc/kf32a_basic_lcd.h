@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_lcd.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.2
+  * 版  本  V2.3
   * 日  期  2019-11-16
   * 描  述  该文件提供了液晶显示(LCD)相关功能函数声明及相关宏定义。
   *********************************************************************
@@ -13,7 +13,7 @@
 
 #include "KF32A_BASIC.h"
 
-#ifdef KF32A_Periph_lcd
+
 /**
   * 描述  LCD液晶显示配置信息结构体
   */
@@ -482,6 +482,7 @@ typedef struct
                                       || ((EVENT) == LCD_INT_UPDATA))
 
 
+#ifdef KF32A_Periph_lcd
 /* 液晶显示(LCD)初始化函数定义**********************************************/
 void LCD_Reset (void);
 void LCD_Configuration(LCD_InitTypeDef* lcdInitStruct);

@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_aes.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.2
+  * 版  本  V2.3
   * 日  期  2019-11-16
   * 描  述  该文件提供了加密(AES)相关功能函数声明及相关宏定义。
   *********************************************************************
@@ -13,7 +13,7 @@
 
 #include "KF32A_BASIC.h"
 
-#ifdef KF32A_Periph_aes
+
 /**
   * AES加密模块（AES）指针定义
   */
@@ -102,6 +102,7 @@ typedef struct
 #define AES_FINISH_INT_CLEAR_DISABLE     ((uint32_t) 0x0 << AES_CTL_AESFIC_POS)
 #define CHECK_AES_FINISH_INT_CLEAR(SEL)  (((SEL) == AES_FINISH_INT_CLEAR_ENABLE) \
                                         || ((SEL) == AES_FINISH_INT_CLEAR_DISABLE) )
+#ifdef KF32A_Periph_aes
 uint32_t GET_AES_OUTPUT0_DATA (void);
 uint32_t GET_AES_OUTPUT1_DATA (void);
 uint32_t GET_AES_OUTPUT2_DATA (void);

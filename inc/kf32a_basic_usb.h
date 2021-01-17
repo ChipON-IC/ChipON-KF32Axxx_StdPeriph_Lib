@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_usb.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.2
+  * 版  本  V2.3
   * 日  期  2019-11-16
   * 描  述  该文件提供了USB模块(USB)相关功能函数声明及相关宏定义。
   *********************************************************************
@@ -13,7 +13,7 @@
 
 #include "KF32A_BASIC.h"
 
-#ifdef KF32A_Periph_usb
+
 /**
   * 描述  USB配置信息结构体
   */
@@ -261,6 +261,7 @@ typedef struct
                                       || ((CFG) == USB_DBG_OPERATIONAL_CONTROL))
 
 
+#ifdef KF32A_Periph_usb
 /* USB模块(USB)初始化函数定义**************************************/
 void USB_Reset(void);
 void USB_Configuration(USB_InitTypeDef* usbInitStruct);

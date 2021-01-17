@@ -2,7 +2,7 @@
   ********************************************************************
   * 文件名  kf32a_basic_led.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.2
+  * 版  本  V2.3
   * 日  期  2019-11-16
   * 描  述  该文件提供了数码显示(LED)相关功能函数声明及相关宏定义。
   *********************************************************************
@@ -13,7 +13,7 @@
 
 #include "KF32A_BASIC.h"
 
-#ifdef KF32A_Periph_led
+
 /**
   * 描述  LED接口模块配置信息结构体
   */
@@ -196,6 +196,8 @@ typedef struct
 										   || ((SEL) == LED_COM_LUM_6)\
 										   || ((SEL) == LED_COM_LUM_4)\
 										   || ((SEL) == LED_COM_LUM_2) )
+
+#ifdef KF32A_Periph_led
 void LED_Reset(void);
 void LED_Configuration (LED_InitTypeDef* ledInitStruct);
 void LED_Struct_Init (LED_InitTypeDef* LEDInitStruct);

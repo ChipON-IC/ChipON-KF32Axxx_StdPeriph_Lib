@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_can.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.2
+  * 版  本  V2.3
   * 日  期  2019-11-16
   * 描  述  该文件提供了控制器局域网总线(CAN)相关的功能函数，包含：
   *          + 控制器局域网总线(CAN)初始化函数
@@ -1044,11 +1044,12 @@ CAN_Transmit_Single (CAN_SFRmap* CANx)
     CHECK_RESTRICTION(CHECK_CAN_ALL_PERIPH(CANx));
 
     /*-------------------- 设置CANx_CTLR寄存器TXR位 --------------------*/
-    SFR_CLR_BIT_ASM(CANx->CTLR, CAN_CTLR_ATX_POS);
-    SFR_CLR_BIT_ASM(CANx->CTLR, CAN_CTLR_TXR_POS);
+//    SFR_CLR_BIT_ASM(CANx->CTLR, CAN_CTLR_ATX_POS);
+//    SFR_CLR_BIT_ASM(CANx->CTLR, CAN_CTLR_TXR_POS);
     CANx->CTLR = CANx->CTLR | 0x300;
     while((CANx->CTLR & CAN_CTLR_TXSTA)>>CAN_CTLR_TXSTA_POS);
     SFR_CLR_BIT_ASM(CANx->CTLR, CAN_CTLR_TXR_POS);
+    SFR_CLR_BIT_ASM(CANx->CTLR, CAN_CTLR_ATX_POS);
 }
 
 /**

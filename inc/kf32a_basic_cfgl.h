@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_cfgl.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.2
+  * 版  本  V2.3
   * 日  期  2019-11-16
   * 描  述  该文件提供了逻辑单元模块(CFGL)相关功能函数声明及相关宏定义。
   *********************************************************************
@@ -12,7 +12,7 @@
 
 #include "KF32A_BASIC.h"
 
-#ifdef KF32A_Periph_cfgl
+
 /**
   * CFGL加密模块（CFGL）指针定义
   */
@@ -334,6 +334,7 @@ typedef struct
 #define CHECK_CFGL1_OUT_SYNCHRO(SEL)     	(((SEL) == CFGL1_OUT_SYNCHRO_ENABLE) \
                                     		|| ((SEL) == CFGL1_OUT_SYNCHRO_DISABLE) )
 
+#ifdef KF32A_Periph_cfgl
 FlagStatus CFGL1_OUT_STATE ();
 FlagStatus CFGL2_OUT_STATE ();
 FlagStatus CFGL2_Get_INT_Flag ();

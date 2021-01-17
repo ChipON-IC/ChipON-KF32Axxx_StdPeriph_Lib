@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_usart.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.2
+  * 版  本  V2.3
   * 日  期  2019-11-16
   * 描  述  该文件提供了USART模块(USART)相关的功能函数，包含：
   *          + USART模块(USART)初始化函数
@@ -579,7 +579,28 @@ USART_Auto_BaudRate_Detection_Enable(USART_SFRmap* USARTx,
         SFR_CLR_BIT_ASM(USARTx->CTLR, USART_CTLR_ABRDEN_POS);
     }
 }
+/**
+  * 描述  读取USART自动波特率检测使能位。
+  * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。
+  *       NewState: USART自动波特率检测使能状态，取值为TRUE 或 FALSE。
+  * 返回  无。
+  */
+FlagStatus USART_Get_Auto_BaudRate_Detection_Flag(USART_SFRmap* USARTx)
+{
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_USART_ALL_PERIPH(USARTx));
 
+    /*---------------- 读取USART_CTLR寄存器ABRDEN位 ----------------*/
+    if (USARTx->CTLR & USART_CTLR_ABRDEN)
+    {
+        return SET;
+    }
+    else
+    {
+    	/* 自动波特率完成自动清零 */
+    	return RESET;
+    }
+}
 /**
   * 描述  设置USART发送间隔字符使能。
   * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。
@@ -873,7 +894,31 @@ USART_Infrare_Detector_Enable(USART_SFRmap* USARTx, FunctionalState NewState)
         SFR_CLR_BIT_ASM(USARTx->CTLR, USART_CTLR_IRDAEN_POS);
     }
 }
+/**
+  * 描述  设置USART RESGD位。
+  * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。
+  *       NewState: USART 单线模式使能状态，取值为TRUE 或 FALSE。
+  * 返回  无。
+  */
+void
+USART_RESHD_Enable (USART_SFRmap* USARTx, FunctionalState NewState)
+{
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_USART_ALL_PERIPH(USARTx));
+    CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(NewState));
 
+    /*---------------- 设置USART_CTLR寄存器SLMEN位 ----------------*/
+    if (NewState != FALSE)
+    {
+        /* 使能单线模式*/
+        SFR_SET_BIT_ASM(USARTx->CTLR, USART_CTLR_RESHD_POS);
+    }
+    else
+    {
+        /* 禁止单线模式*/
+        SFR_CLR_BIT_ASM(USARTx->CTLR, USART_CTLR_RESHD_POS);
+    }
+}
 /**
   * 描述  设置USART 单线模式使能位。
   * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。
@@ -1901,6 +1946,30 @@ USART_Get_Receive_BUFR_Ready_Flag (USART_SFRmap* USARTx)
     }
 }
 
+/**
+  * 描述  获取USART 唤醒使能位状态 。
+  * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。
+  * 返回      1: USART正在等待下降沿；
+  *       0: USART接收器正常工作。
+  */
+FlagStatus
+USART_Get_WUEN_Flag (USART_SFRmap* USARTx)
+{
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_USART_ALL_PERIPH(USARTx));
+
+    /*---------------- 读取USART_CTLR寄存器WUEN位 ----------------*/
+    if (USARTx->CTLR & USART_CTLR_WUEN)
+    {
+        /* 等待下降沿*/
+        return SET;
+    }
+    else
+    {
+    	/*正常工作*/
+        return RESET;
+    }
+}
 /**
   * 描述  获取USART 发送BUF为空中断标志状态 。
   * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。

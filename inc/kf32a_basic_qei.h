@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_qei.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.2
+  * 版  本  V2.3
   * 日  期  2019-11-16
   * 描  述  该文件提供了正交编码脉冲电路(QEI)相关功能函数声明及相关宏定义。
   *********************************************************************
@@ -13,7 +13,7 @@
 
 #include "KF32A_BASIC.h"
 
-#ifdef KF32A_Periph_qei
+
 
 /**
   * 描述  QEI模块正交编码器信息结构体
@@ -143,7 +143,7 @@ typedef struct
                                                     | QEI_INT_TX_OVERFLOW))) == 0)
 
 
-
+#ifdef KF32A_Periph_qei
 /* 正交编码脉冲电路(QEI)初始化函数定义**************************************/
 void QEI_Reset (QEI_SFRmap* QEIx);
 void QEI_Configuration(QEI_SFRmap* QEIx, QEI_InitTypeDef* qeiInitStruct);

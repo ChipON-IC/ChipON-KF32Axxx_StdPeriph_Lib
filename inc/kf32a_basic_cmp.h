@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_cmp.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.2
+  * 版  本  V2.3
   * 日  期  2019-11-16
   * 描述    该文件用于比较器(CMP)外设的库函数声明及相关宏定义。
   *
@@ -14,7 +14,7 @@
 
 #include "KF32A_BASIC.h"
 
-#ifdef KF32A_Periph_cmp
+
 /**
   * CMP外设判断
   */
@@ -395,6 +395,7 @@ typedef struct
 #define CHECK_CMP_FLTINSEL(SEL)   		       (((SEL) == CMP_FLTINSEL_CMPOUT) \
 										       || ((SEL) == CMP_FLTINSEL_IO))
 
+#ifdef KF32A_Periph_cmp
 /** 初始化及配置函数 ************************************************/
 void CMP_Reset (void);
 void CMP_Configuration (CMP_SFRmap * CMPx, CMP_InitTypeDef* CMPInitStruct);

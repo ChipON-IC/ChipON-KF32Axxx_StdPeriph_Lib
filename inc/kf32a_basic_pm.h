@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_pm.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.2
+  * 版  本  V2.3
   * 日  期  2019-11-16
   * 描  述  该文件提供了电源管理(PM)相关功能函数声明及相关宏定义。
   *********************************************************************
@@ -21,15 +21,22 @@
 #define PERIPHERAL_OUTRST_STATUS        ((uint32_t)1)
 #define CHECK_PERIPHERAL_RST(RST)       (((RST) == PERIPHERAL_RST_STATUS) \
                                       || ((RST) == PERIPHERAL_OUTRST_STATUS))
+/**
+  * SRAM的A区在standby模式下工作配置
+  */
+#define PM_SRAMA_IN_STANDBY_POWER_DOWN   ((uint32_t)0)
+#define PM_SRAMA_IN_STANDBY_KEEP_DATA    ((uint32_t)1)
+#define CHECK_PM_SRAMA_IN_STANDBY(MODE)  (((MODE) == PM_SRAMA_IN_STANDBY_POWER_DOWN) \
+                                      || ((MODE) == PM_SRAMA_IN_STANDBY_KEEP_DATA))
 
 /**
-  * SRAM的B区在standby模式下工作配置
+  * LPRAM在standby模式下工作配置
   */
-#define PM_SRAM_IN_STANDBY_POWER_DOWN   ((uint32_t)0)
-#define PM_SRAM_IN_STANDBY_KEEP_DATA    ((uint32_t)1)
-#define CHECK_PM_SRAM_IN_STANDBY(MODE)  (((MODE) == PM_SRAM_IN_STANDBY_POWER_DOWN) \
-                                      || ((MODE) == PM_SRAM_IN_STANDBY_KEEP_DATA))
-
+#define PM_LPRAM_IN_STANDBY_POWER_DOWN   ((uint32_t)0)
+#define PM_LPRAM_IN_STANDBY_KEEP_DATA    ((uint32_t)1)
+#define CHECK_PM_LPSRAM_IN_STANDBY(MODE)  (((MODE) == PM_LPRAM_IN_STANDBY_POWER_DOWN) \
+                                      || ((MODE) == PM_LPRAM_IN_STANDBY_KEEP_DATA))
+  
 /**
   * 延时时间
   */
@@ -428,10 +435,13 @@ void PM_Main_Bandgap_Enable (FunctionalState NewState);
 void PM_LDO18_Enable (FunctionalState NewState);
 void PM_Backup_Registers_Reset_Config (uint32_t BkpReset);
 void PM_Independent_Watchdog_Reset_Config (uint32_t IWDTReset);
-void PM_SRAM_In_Standby_Work_Mode_Config (uint32_t WorkMode);
+void PM_SRAMA_In_Standby_Work_Mode_Config (uint32_t WorkMode);
+void PM_LPRAM_In_Standby_Work_Mode_Config (uint32_t WorkMode);
 void PM_Backup_POR_Delay_Time_Config (uint32_t DelayTime);
 void PM_Main_POR_Delay_Time_Config (uint32_t DelayTime);
 void PM_Peripheral_IO_Port_Config (uint32_t PeripheralPort);
+void PM_OCAL0LOCK_Enable (FunctionalState NewState);
+void PM_MEMSEL_Enable (FunctionalState NewState);
 void PM_Flash_Power_Off_Enable (FunctionalState NewState);
 void PM_Backup_Write_And_Read_Enable (FunctionalState NewState);
 void PM_LPR_Software_Enable (FunctionalState NewState);
