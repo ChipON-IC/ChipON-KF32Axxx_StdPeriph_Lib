@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_dac.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.4
+  * 版  本  V2.5
   * 日  期  2019-11-16
   * 描述    该文件用于数模转换器(DAC)外设的库函数声明及相关宏定义。
   *
@@ -39,6 +39,8 @@ typedef struct
                                            取值为宏“DAC屏蔽/幅值选择器”中的一个 */
     uint32_t m_Clock;                   /* DAC工作时钟
                                            取值为宏“DAC工作时钟”中的一个 */
+    uint32_t m_ClockDiv;                /* DAC时钟分频，
+                                            取值为宏“DAC时钟分频”中的一个。 */
     uint32_t m_ReferenceVoltage;        /* DAC参考电压选择
                                            取值为宏“DAC参考电压选择”中的一个 */
     FunctionalState m_OutputBuffer;     /* DAC输出缓冲使能，
@@ -145,6 +147,26 @@ typedef struct
 #define CHECK_DAC_CLK(CLK)              (((CLK) == DAC_CLK_SCLK) \
                                         || ((CLK) == DAC_CLK_HFCLK) \
                                         || ((CLK) == DAC_CLK_LFCLK))
+
+/**
+  * DAC时钟分频
+  */
+#define DAC_CLK_DIV_1                   ((uint32_t)0<<DAC_CTL1_CLKDIV0_POS)
+#define DAC_CLK_DIV_2                   ((uint32_t)1<<DAC_CTL1_CLKDIV0_POS)
+#define DAC_CLK_DIV_4                   ((uint32_t)2<<DAC_CTL1_CLKDIV0_POS)
+#define DAC_CLK_DIV_8                   ((uint32_t)3<<DAC_CTL1_CLKDIV0_POS)
+#define DAC_CLK_DIV_16                  ((uint32_t)4<<DAC_CTL1_CLKDIV0_POS)
+#define DAC_CLK_DIV_32                  ((uint32_t)5<<DAC_CTL1_CLKDIV0_POS)
+#define DAC_CLK_DIV_64                  ((uint32_t)6<<DAC_CTL1_CLKDIV0_POS)
+#define DAC_CLK_DIV_128                 ((uint32_t)7<<DAC_CTL1_CLKDIV0_POS)
+#define CHECK_DAC_CLK_DIV(CLK)       	 (((CLK) == DAC_CLK_DIV_1)\
+									  || ((CLK) == DAC_CLK_DIV_2) \
+                                      || ((CLK) == DAC_CLK_DIV_4) \
+                                      || ((CLK) == DAC_CLK_DIV_8) \
+                                      || ((CLK) == DAC_CLK_DIV_16) \
+                                      || ((CLK) == DAC_CLK_DIV_32) \
+                                      || ((CLK) == DAC_CLK_DIV_64) \
+                                      || ((CLK) == DAC_CLK_DIV_128))
 
 /**
   * DAC参考电压选择

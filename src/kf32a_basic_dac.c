@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_dac.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.4
+  * 版  本  V2.5
   * 日  期  2019-11-16
   * 描  述  该文件提供了DAC外设功能函数，包含：
   *          + 初始化及配置函数
@@ -90,6 +90,7 @@ DAC_Configuration (DAC_SFRmap* DACx, DAC_InitTypeDef* dacInitStruct)
     CHECK_RESTRICTION(CHECK_DAC_WAVE(dacInitStruct->m_Wave));
     CHECK_RESTRICTION(CHECK_DAC_MAS(dacInitStruct->m_Mas));
     CHECK_RESTRICTION(CHECK_DAC_CLK(dacInitStruct->m_Clock));
+    CHECK_RESTRICTION(CHECK_DAC_CLK_DIV(dacInitStruct->m_ClockDiv));
     CHECK_RESTRICTION(CHECK_DAC_RFS(dacInitStruct->m_ReferenceVoltage));
     CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(dacInitStruct->m_OutputBuffer));
     CHECK_RESTRICTION(CHECK_DAC_OUTPUT_PIN(dacInitStruct->m_OutputPin));
@@ -109,11 +110,13 @@ DAC_Configuration (DAC_SFRmap* DACx, DAC_InitTypeDef* dacInitStruct)
     DACx->CTL = SFR_Config (DACx->CTL, ~DAC_CTL_INIT_MASK, tmpreg);
 
     /*---------------------------- DACx_CTL1寄存器配置 -----------------*/
+    /* 根据结构体成员m_ClockDiv，设置CLKDIV位域 */
     /* 根据结构体成员m_Clock，设置CLK位域 */
     /* 根据结构体成员m_ReferenceVoltage，设置RFS位域 */
     /* 根据结构体成员m_OutputBuffer，设置BUFEN位域 */
     /* 根据结构体成员m_OutputPin，设置SEL位域 */
-    tmpreg = (dacInitStruct->m_Clock) \
+    tmpreg = (dacInitStruct->m_ClockDiv)\
+    	   | (dacInitStruct->m_Clock) \
            | (dacInitStruct->m_ReferenceVoltage) \
            | (dacInitStruct->m_OutputBuffer << DAC_CTL1_BUFEN_POS) \
            | (dacInitStruct->m_OutputPin);
@@ -145,6 +148,8 @@ DAC_Struct_Init (DAC_InitTypeDef* dacInitStruct)
     dacInitStruct->m_Mas = DAC_LFSR_UNMASK_BITS0_0;
     /* 初始化 DAC工作时钟 */
     dacInitStruct->m_Clock = DAC_CLK_SCLK;
+    /* 初始化 DAC时钟分频 */
+    dacInitStruct->m_ClockDiv = DAC_CLK_DIV_1;
     /* 初始化 DAC参考电压选择 */
     dacInitStruct->m_ReferenceVoltage = DAC_RFS_AVDD;
     /* 初始化 DAC输出缓冲使能 */

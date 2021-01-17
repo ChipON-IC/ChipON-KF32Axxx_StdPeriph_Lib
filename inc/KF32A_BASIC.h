@@ -2,7 +2,7 @@
   *********************************************************************
   * 文件名 KF32A_BASIC.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.4
+  * 版  本  V2.5
   * 日  期  2019-11-16
   * 描  述  KF32A系列外设访问入口文件，包含：
   *          - 所有外设的内存结构
@@ -6488,6 +6488,9 @@ typedef struct DAC_MemMap {
 #define DAC_CTL1_CLK0_POS               (4)
 #define DAC_CTL1_CLK1_POS               (5)
 #define DAC_CTL1_BUFEN_POS              (6)
+#define DAC_CTL1_CLKDIV0_POS            (9)
+#define DAC_CTL1_CLKDIV1_POS            (10)
+#define DAC_CTL1_CLKDIV2_POS            (11)
 #define DAC_CTL1_SEL                    ((uint32_t)1<<(DAC_CTL1_SEL_POS))
 #define DAC_CTL1_RFS                    ((uint32_t)1<<(DAC_CTL1_RFS0_POS))
 #define DAC_CTL1_RFS0                   ((uint32_t)1<<(DAC_CTL1_RFS0_POS))
@@ -6496,6 +6499,10 @@ typedef struct DAC_MemMap {
 #define DAC_CTL1_CLK0                   ((uint32_t)1<<(DAC_CTL1_CLK0_POS))
 #define DAC_CTL1_CLK1                   ((uint32_t)1<<(DAC_CTL1_CLK1_POS))
 #define DAC_CTL1_BUFEN                  ((uint32_t)1<<(DAC_CTL1_BUFEN_POS))
+#define DAC_CTL1_CLKDIV                 ((uint32_t)7<<(DAC_CTL1_CLKDIV0_POS))
+#define DAC_CTL1_CLKDIV0                ((uint32_t)1<<(DAC_CTL1_CLKDIV0_POS))
+#define DAC_CTL1_CLKDIV1                ((uint32_t)1<<(DAC_CTL1_CLKDIV1_POS))
+#define DAC_CTL1_CLKDIV2                ((uint32_t)1<<(DAC_CTL1_CLKDIV2_POS))
 
 /* DACx_CAL 位域 */
 #define DAC_CAL_TPEN_POS                (0)
@@ -6895,15 +6902,15 @@ typedef struct CMP_MemMap {
 #ifdef KF32A_Periph_lcd
 /* LCD - 外设寄存器内存结构 */
 typedef struct LCD_MemMap {
-    volatile uint32_t CTL;              /* PCLK控制寄存器0, 偏移:0x00 */
-    volatile uint32_t PTL;              /* PCLK控制寄存器1, 偏移:0x04 */
-    volatile uint32_t INTCTL;           /* PCLK控制寄存器2, 偏移:0x08 */
-    volatile uint32_t SEL0;             /* PCLK控制寄存器3, 偏移:0x0C */
-    volatile uint32_t SEL1;             /* PCLK控制寄存器3, 偏移:0x10 */
-    volatile uint32_t SEG0;             /* PCLK控制寄存器3, 偏移:0x14 */
-    volatile uint32_t SEG1;             /* PCLK控制寄存器3, 偏移:0x18 */
+    volatile uint32_t CTL;              /* LCD CTL寄存器,    偏移:0x00 */
+    volatile uint32_t PTL;              /* LCD PTL寄存器,    偏移:0x04 */
+    volatile uint32_t INTCTL;           /* LCD INTCTL寄存器, 偏移:0x08 */
+    volatile uint32_t SEL0;             /* LCD SEL0寄存器,   偏移:0x0C */
+    volatile uint32_t SEL1;             /* LCD SEL1寄存器,   偏移:0x10 */
+    volatile uint32_t SEG0;             /* LCD SEG0寄存器,   偏移:0x14 */
+    volatile uint32_t SEG1;             /* LCD SEG1寄存器 ,   偏移:0x18 */
              uint32_t RESERVED[9];      /* 保留地址, 偏移:0x1C */
-    volatile uint32_t DATA[12];         /* PCLK控制寄存器3, 偏移:0x40 */
+    volatile uint32_t DATA[12];         /* LCD DATA寄存器,    偏移:0x40 */
 }LCD_SFRmap;
 
 /* ----------------------------------------------------------------------------

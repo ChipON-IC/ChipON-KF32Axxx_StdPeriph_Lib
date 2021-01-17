@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_gpio.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.4
+  * 版  本  V2.5
   * 日  期  2019-11-16
   * 描  述  该文件提供了通用输入输出端口(GPIO)外设功能函数，包含：
   *          + 通用输入输出端口(GPIO)初始化及配置函数
@@ -681,6 +681,7 @@ GPIO_Toggle_Output_Data_Config (GPIO_SFRmap* GPIOx, uint16_t GpioPin)
   *                   GPIO_RMP_AF2_T6: T6
   *                   GPIO_RMP_AF2_T9: T9
   *                   GPIO_RMP_AF2_T10: T10
+  *                   GPIO_RMP_AF3_T9: T9
   *                   GPIO_RMP_AF3_T20: T20
   *                   GPIO_RMP_AF3_T21: T21
   *                   GPIO_RMP_AF3_T23: T23

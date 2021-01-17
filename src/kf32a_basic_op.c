@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_op.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.4
+  * 版  本  V2.5
   * 日  期  2019-11-16
   * 描  述  该文件提供了模拟运放(OP)外设功能函数，包含：
   *          + 模拟运放(OP)初始化
@@ -134,7 +134,7 @@ void OP3_POSITIVE_INPUT_SELSECT(uint32_t SEL)
 /**
   * 描述  运放输出使能选择。
   * 输入  : OP0/OP1/OP2/OP3
-  * 	TURE/FALSE
+  * 	TRUE/FALSE
   * 返回  无。
   */
 void OP_OUTPUT_EN(uint32_t OPx,FunctionalState NewState)
@@ -179,7 +179,7 @@ void OP_OUTPUT_EN(uint32_t OPx,FunctionalState NewState)
 /**
   * 描述  运放模块使能选择。
   * 输入  : OP0/OP1/OP2/OP3
-  * 	TURE/FALSE
+  * 	TRUE/FALSE
   * 返回  无。
   */
 void OP_MODULE_EN(uint32_t OPx,FunctionalState NewState)

@@ -2,7 +2,7 @@
   ********************************************************************
   * 文件名  kf32a_basic_gpio.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.4
+  * 版  本  V2.5
   * 日  期  2019-11-16
   * 描  述  该文件提供了通用输入输出端口(GPIO)相关功能函数声明及相关宏定义。
   *
@@ -169,6 +169,7 @@ typedef enum
 #define GPIO_RMP_AF2_T6                  ((uint8_t)0x02)
 #define GPIO_RMP_AF2_T9                  ((uint8_t)0x02)
 #define GPIO_RMP_AF2_T10                 ((uint8_t)0x02)
+#define GPIO_RMP_AF3_T9                  ((uint8_t)0x03)
 #define GPIO_RMP_AF3_T20                 ((uint8_t)0x03)
 #define GPIO_RMP_AF3_T21                 ((uint8_t)0x03)
 #define GPIO_RMP_AF3_T23                 ((uint8_t)0x03)
@@ -225,6 +226,7 @@ typedef enum
                                       || ((RMP) == GPIO_RMP_AF2_T6      )     \
                                       || ((RMP) == GPIO_RMP_AF2_T9      )     \
                                       || ((RMP) == GPIO_RMP_AF2_T10     )    \
+                                      || ((RMP) == GPIO_RMP_AF3_T9      )    \
                                       || ((RMP) == GPIO_RMP_AF3_T20     )    \
                                       || ((RMP) == GPIO_RMP_AF3_T21     )    \
                                       || ((RMP) == GPIO_RMP_AF3_T23     )    \

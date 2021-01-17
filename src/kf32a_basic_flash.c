@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_flash.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.4
+  * 版  本  V2.5
   * 日  期  2019-11-16
   * 描  述  该文件提供了FLASH程序存储器(FLASH)相关的功能函数，包含：
   *          + FLASH程序存储器(FLASH)功能配置函数
@@ -1241,7 +1241,7 @@ FLASH_Program_Configuration (FLASH_ProgramTypeDef * flashProgramStruct)
   */
 
 /**
-  * 描述  读取flash的程序区或者信息区
+  * 描述  读取flash的程序区或者信息区(RAM)
   * 输入:address(读取地址）,ZoneSelect（读取区域选择）
   * 返回  输入指向地址的32位数据
   */
@@ -1274,6 +1274,12 @@ Read_Flash_or_CFR_RAM (uint32_t address,uint32_t ZoneSelect)
 	return read_data;
 
 }
+
+/**
+  * 描述  读取flash的程序区或者信息区
+  * 输入:address(读取地址）,ZoneSelect（读取区域选择）
+  * 返回  输入指向地址的32位数据
+  */
 uint32_t Read_Flash_or_CFR (uint32_t address,uint32_t ZoneSelect)
 {
 	uint32_t *read_adr;
@@ -1300,4 +1306,34 @@ uint32_t Read_Flash_or_CFR (uint32_t address,uint32_t ZoneSelect)
 	FLASH_Clear_Config_Unlock_Status ();//清零FLASH配置区解锁状态位。
 	return read_data;
 
+}
+
+/**
+  * 描述  读取芯片唯一ID
+  * 输入:无
+  * 返回  对应的唯一ID
+  */
+uint32_t  Read_Soft_Device_ID1(void)
+{
+	uint32_t Soft_Device_ID1;
+	Soft_Device_ID1 = Read_Flash_or_CFR(0x444,FLASH_PROGRAM_CFG);
+	return Soft_Device_ID1;
+}
+uint32_t  Read_Soft_Device_ID2(void)
+{
+	uint32_t Soft_Device_ID2;
+	Soft_Device_ID2 = Read_Flash_or_CFR(0x448,FLASH_PROGRAM_CFG);
+	return Soft_Device_ID2;
+}
+uint32_t  Read_Soft_Device_ID3(void)
+{
+	uint32_t Soft_Device_ID3;
+	Soft_Device_ID3 = Read_Flash_or_CFR(0x44C,FLASH_PROGRAM_CFG);
+	return Soft_Device_ID3;
+}
+uint32_t  Read_Soft_Device_ID4(void)
+{
+	uint32_t Soft_Device_ID4;
+	Soft_Device_ID4 = Read_Flash_or_CFR(0x450,FLASH_PROGRAM_CFG);
+	return Soft_Device_ID4;
 }
