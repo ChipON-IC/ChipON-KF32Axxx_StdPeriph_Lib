@@ -1039,17 +1039,17 @@ CAN_Release_Receive_Buffer (CAN_SFRmap* CANx, uint32_t ReleaseCount)
 void
 CAN_Transmit_Single (CAN_SFRmap* CANx)
 {
-	volatile unsigned int	temp;
+ volatile unsigned char i=20;
     /* 参数校验 */
     CHECK_RESTRICTION(CHECK_CAN_ALL_PERIPH(CANx));
 
     /*-------------------- 设置CANx_CTLR寄存器TXR位 --------------------*/
-//    SFR_CLR_BIT_ASM(CANx->CTLR, CAN_CTLR_ATX_POS);
-//    SFR_CLR_BIT_ASM(CANx->CTLR, CAN_CTLR_TXR_POS);
     CANx->CTLR = CANx->CTLR | 0x300;
-    while((CANx->CTLR & CAN_CTLR_TXSTA)>>CAN_CTLR_TXSTA_POS);
-    SFR_CLR_BIT_ASM(CANx->CTLR, CAN_CTLR_TXR_POS);
+
+    while(!(CANx->CTLR & CAN_CTLR_TXSTA)>>CAN_CTLR_TXSTA_POS);
+        while(i--);
     SFR_CLR_BIT_ASM(CANx->CTLR, CAN_CTLR_ATX_POS);
+    SFR_CLR_BIT_ASM(CANx->CTLR, CAN_CTLR_TXR_POS);
 }
 
 /**
