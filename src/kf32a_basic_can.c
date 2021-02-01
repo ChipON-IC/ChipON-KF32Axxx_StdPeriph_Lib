@@ -72,49 +72,49 @@ CAN_Reset(CAN_SFRmap* CANx)
 #ifdef KF32A_Periph_can0
     if (CANx == CAN0_SFR)
     {
+    	PCLK_CTL2_Peripheral_Clock_Enable(PCLK_CTL2_CAN0CLKEN, TRUE);
         RST_CTL2_Peripheral_Reset_Enable(RST_CTL2_CAN0RST, TRUE);
         RST_CTL2_Peripheral_Reset_Enable(RST_CTL2_CAN0RST, FALSE);
-        PCLK_CTL2_Peripheral_Clock_Enable(PCLK_CTL2_CAN0CLKEN, TRUE);
     }
 #endif
 #ifdef KF32A_Periph_can1
     if(CANx == CAN1_SFR)
     {
+    	PCLK_CTL2_Peripheral_Clock_Enable(PCLK_CTL2_CAN1CLKEN, TRUE);
         RST_CTL2_Peripheral_Reset_Enable(RST_CTL2_CAN1RST, TRUE);
         RST_CTL2_Peripheral_Reset_Enable(RST_CTL2_CAN1RST, FALSE);
-        PCLK_CTL2_Peripheral_Clock_Enable(PCLK_CTL2_CAN1CLKEN, TRUE);
     }
 #endif
 #ifdef KF32A_Periph_can2
     if(CANx == CAN2_SFR)
     {
+    	PCLK_CTL2_Peripheral_Clock_Enable(PCLK_CTL2_CAN2CLKEN, TRUE);
         RST_CTL2_Peripheral_Reset_Enable(RST_CTL2_CAN2RST, TRUE);
         RST_CTL2_Peripheral_Reset_Enable(RST_CTL2_CAN2RST, FALSE);
-        PCLK_CTL2_Peripheral_Clock_Enable(PCLK_CTL2_CAN2CLKEN, TRUE);
     }
 #endif
 #ifdef KF32A_Periph_can3
     if(CANx == CAN3_SFR)
     {
+    	PCLK_CTL2_Peripheral_Clock_Enable(PCLK_CTL2_CAN3CLKEN, TRUE);
         RST_CTL2_Peripheral_Reset_Enable(RST_CTL2_CAN3RST, TRUE);
         RST_CTL2_Peripheral_Reset_Enable(RST_CTL2_CAN3RST, FALSE);
-        PCLK_CTL2_Peripheral_Clock_Enable(PCLK_CTL2_CAN3CLKEN, TRUE);
     }
 #endif
 #ifdef KF32A_Periph_can4
     if(CANx == CAN4_SFR)
     {
+    	PCLK_CTL2_Peripheral_Clock_Enable(PCLK_CTL3_CAN4CLKEN, TRUE);
         RST_CTL2_Peripheral_Reset_Enable(RST_CTL3_CAN4RST, TRUE);
         RST_CTL2_Peripheral_Reset_Enable(RST_CTL3_CAN4RST, FALSE);
-        PCLK_CTL2_Peripheral_Clock_Enable(PCLK_CTL3_CAN4CLKEN, TRUE);
     }
 #endif
 #ifdef KF32A_Periph_can5
     if(CANx == CAN5_SFR)
     {
+    	PCLK_CTL2_Peripheral_Clock_Enable(PCLK_CTL3_CAN5CLKEN, TRUE);
         RST_CTL2_Peripheral_Reset_Enable(RST_CTL3_CAN5RST, TRUE);
         RST_CTL2_Peripheral_Reset_Enable(RST_CTL3_CAN5RST, FALSE);
-        PCLK_CTL2_Peripheral_Clock_Enable(PCLK_CTL3_CAN5CLKEN, TRUE);
     }
 #endif
 }
