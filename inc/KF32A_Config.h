@@ -15,8 +15,11 @@
 #include "__Kungfu32_chipmodel_define.h"
 
 /* 型号定义 */
-#ifdef KF32A152MQV
+#ifdef KF32A152MQV 
 	#define KF32A152
+#endif
+#ifdef KF32A153MQV 
+	#define KF32A153
 #endif
 
 /* 型号定义 */
@@ -72,7 +75,9 @@
 #endif
 
 /* 型号定义 */
-#ifdef KF32A250KQT
+#ifdef KF32A250GQS
+	#define KF32A250
+#elif defined KF32A250KQT
 	#define KF32A250
 #elif defined KF32A250MQT
 	#define KF32A250
@@ -81,21 +86,33 @@
 #endif
 
 /* 型号定义 */
-#ifdef KF32A141IQS
+#ifdef KF32A141INP
+	#define KF32A141
+#elif defined KF32A141IQS
 	#define KF32A141
 #elif defined KF32A141IQT
 	#define KF32A141
 #endif
+#if defined KF32A141IQS || defined KF32A141IQT
+	#define A141_CAN_EX 
+	#define A141_USART_EX 
+#endif
 
 /* 型号定义 */
-#ifdef KF32A140IQS
+#ifdef KF32A140INP
+	#define KF32A140
+#elif defined KF32A140IQS
 	#define KF32A140
 #elif defined KF32A140IQT
 	#define KF32A140
 #endif
+#if defined KF32A140IQS || defined KF32A140IQT
+	#define A140_CAN_EX 
+	#define A140_USART_EX 
+#endif
 
 /* 外设资源 */
-#ifdef KF32A152
+#if defined KF32A152 || KF32A153
     /* ADC */
 	#define KF32A_Periph_adc
 	#define KF32A_Periph_adc0
@@ -178,7 +195,7 @@
 	#define KF32A_Periph_atime9_time10
 	#define KF32A_Periph_atime9
 	#define KF32A_Periph_atime10
-#endif //KF32A152
+#endif //KF32A152||153
 
 
 /* 外设资源 */
@@ -223,7 +240,7 @@
 	/* SPI */
 	#define KF32A_Periph_spi
 	#define KF32A_Periph_spi0
-	#define KF32A_Periph_spi2
+	#define KF32A_Periph_spi1
     /* USART */
 	#define KF32A_Periph_usart
 	#define KF32A_Periph_usart0
@@ -481,7 +498,6 @@
 	/* CAN */
 	#define KF32A_Periph_can
     #define KF32A_Periph_can0
-    #define KF32A_Periph_can1
     /* CFGL */
     #define KF32A_Periph_cfgl
     /* CMP */
@@ -516,8 +532,6 @@
 	#define KF32A_Periph_usart
 	#define KF32A_Periph_usart0
 	#define KF32A_Periph_usart1
-	#define KF32A_Periph_usart2
-	#define KF32A_Periph_usart4
 	/* BTIME */
 	#define KF32A_Periph_btime14
 	#define KF32A_Periph_btime15
@@ -532,6 +546,13 @@
 	#define KF32A_Periph_atime5
 	#define KF32A_Periph_atime6
 #endif //KF32A141
+#ifdef A141_CAN_EX
+    #define KF32A_Periph_can1
+#endif //A141_CAN_EX
+#ifdef A141_USART_EX	
+	#define KF32A_Periph_usart2
+	#define KF32A_Periph_usart4
+#endif //A141_USART_EX
 
 #ifdef KF32A140
     /* ADC */
@@ -544,7 +565,6 @@
 	/* CAN */
 	#define KF32A_Periph_can
     #define KF32A_Periph_can0
-    #define KF32A_Periph_can1
     /* CFGL */
     #define KF32A_Periph_cfgl
     /* CMP */
@@ -571,8 +591,6 @@
 	#define KF32A_Periph_usart
 	#define KF32A_Periph_usart0
 	#define KF32A_Periph_usart1
-	#define KF32A_Periph_usart2
-	#define KF32A_Periph_usart4
 	/* BTIME */
 	#define KF32A_Periph_btime14
 	#define KF32A_Periph_btime15
@@ -587,5 +605,12 @@
 	#define KF32A_Periph_atime5
 	#define KF32A_Periph_atime6
 #endif //KF32A140
+#ifdef A140_CAN_EX
+    #define KF32A_Periph_can1
+#endif //A140_CAN_EX
+#ifdef A140_USART_EX	
+	#define KF32A_Periph_usart2
+	#define KF32A_Periph_usart4
+#endif //A140_USART_EX
 
 #endif /* _KF32A_Config_H */
