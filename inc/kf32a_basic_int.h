@@ -1,10 +1,10 @@
 /**
   ********************************************************************
-  * �ļ���  kf32a_basic_int.h
-  * ��  ��  ChipON_AE/FAE_Group
-  * ��  ��  V2.61
-  * ��  ��  2019-11-16
-  * ��  ��  ���ļ��ṩ���ж���ع��ܺ�����������غ궨�塣
+  * 文件名  kf32a_basic_int.h
+  * 作  者  ChipON_AE/FAE_Group
+  * 版  本  V2.61
+  * 日  期  2019-11-16
+  * 描  述  该文件提供了中断相关功能函数声明及相关宏定义。
   *********************************************************************
 */
 
@@ -14,29 +14,29 @@
 #include "KF32A_BASIC.h"
 
 /**
-  * �ж�(INT)ָ�붨��
+  * 中断(INT)指针定义
   */
 #define CHECK_INT_PERIPH(PERIPH)        ((PERIPH) == INT_SFR)
 
 /**
-  * ����  �ⲿ�ж�(EINT)������Ϣ�ṹ��
+  * 描述  外部中断(EINT)配置信息结构体
   */
 typedef struct
 {
-    uint32_t m_Line;            /* �ⲿ�жϱ�ţ�
-                                   ȡֵΪ�ꡰ�ⲿ�жϱ�š��� */
-    FunctionalState m_Mask;     /* �ⲿ�ж�ʹ�ܿ��ƣ�
-                                   ȡֵΪTRUE��FALSE�� */
-    FunctionalState m_Rise;     /* �ⲿ�ж��������ж�ʹ�ܣ�
-                                   ȡֵΪTRUE��FALSE�� */
-    FunctionalState m_Fall;     /* �ⲿ�ж��½����ж�ʹ�ܣ�
-                                   ȡֵΪTRUE��FALSE�� */
-    uint32_t m_Source;          /* �ⲿ�жϵ��ж�Դѡ��
-                                   ȡֵΪ�ꡰ�ⲿ�ж�Դ���� */
+    uint32_t m_Line;            /* 外部中断编号，
+                                   取值为宏“外部中断编号”。 */
+    FunctionalState m_Mask;     /* 外部中断使能控制，
+                                   取值为TRUE或FALSE。 */
+    FunctionalState m_Rise;     /* 外部中断上升沿中断使能，
+                                   取值为TRUE或FALSE。 */
+    FunctionalState m_Fall;     /* 外部中断下降沿中断使能，
+                                   取值为TRUE或FALSE。 */
+    uint32_t m_Source;          /* 外部中断的中断源选择，
+                                   取值为宏“外部中断源”。 */
 } EINT_InitTypeDef;
 
 /**
-  * �ⲿ�жϱ��
+  * 外部中断编号
   */
 #define INT_EXTERNAL_INTERRUPT_0        ((uint32_t)0)
 #define INT_EXTERNAL_INTERRUPT_1        ((uint32_t)1)
@@ -76,7 +76,7 @@ typedef struct
                                             && ((NUM) <= 15))
 
 /**
-  * �ⲿ�ж�Դ
+  * 外部中断源
   */
 #define INT_EXTERNAL_SOURCE_PA          ((uint32_t)0)
 #define INT_EXTERNAL_SOURCE_PB          ((uint32_t)1)
@@ -96,12 +96,12 @@ typedef struct
                                       && ((PIN) <= INT_EXTERNAL_SOURCE_EINT21TO31))
 
 /**
-  * �ж����ȼ���Ӧ����
+  * 中断优先级响应基级
   */
 #define CHECK_INT_PRIORITY_BASE(BASE)   ((BASE) <= 0xF)
 
 /**
-  * �ж��Զ���ջ����ѡ��
+  * 中断自动堆栈对齐选择
   */
 #define INT_STACK_DOUBLE_ALIGN          ((uint32_t)0<<(INT_CTL0_DSALIGN_POS))
 #define INT_STACK_SINGLE_ALIGN          ((uint32_t)1<<(INT_CTL0_DSALIGN_POS))
@@ -109,7 +109,7 @@ typedef struct
                                       || ((Align) == INT_STACK_SINGLE_ALIGN))
 
 /**
-  * �������ȼ�����
+  * 设置优先级分组
   */
 #define INT_PRIORITY_GROUP_3VS1         ((uint32_t)0<<(INT_CTL0_PRIGROUP0_POS))
 #define INT_PRIORITY_GROUP_2VS2         ((uint32_t)1<<(INT_CTL0_PRIGROUP0_POS))
@@ -121,12 +121,12 @@ typedef struct
                                       || ((NUM) == INT_PRIORITY_GROUP_0VS4))
 
 /**
-  * �ں˻������ж��������
+  * 内核或外设中断向量编号
   */
 #define CHECK_PERIPHERAL_INTERRUPT_INDEX(NUM)   ((NUM) <= INT_USART7)
 
 /**
-  * �ж����ȼ�����У��
+  * 中断优先级配置校验
   */
 #define CHECK_PRIORITY_CONFIG(GROUP, PREEMPT, SUB) \
                 ((((GROUP) == INT_PRIORITY_GROUP_3VS1) \
@@ -139,7 +139,7 @@ typedef struct
                   && ((PREEMPT) <= 0) && ((SUB) <= 15)))
 
 
-/* �ж�(INT)�������ú�������************************************************/
+/* 中断(INT)功能配置函数定义************************************************/
 uint8_t INT_Get_Interrupt_Action (void);
 uint8_t INT_Get_Priority_Pending_Action (void);
 void INT_Priority_Base (uint8_t PriBase);
@@ -159,12 +159,13 @@ FlagStatus INT_Get_Interrupt_Flag (InterruptIndex Peripheral);
 void INT_Clear_Interrupt_Flag (InterruptIndex Peripheral);
 void INT_Interrupt_Priority_Config (InterruptIndex Peripheral,
                     uint32_t Preemption, uint32_t SubPriority);
+void INT_Set_Interrupt_Priority (InterruptIndex Peripheral, uint32_t Priority);
 void INT_Stack_Delay_Enable (uint8_t IntDelay);
 void INT_Vector_Offset_Config (uint32_t VectorOffset);
-/* �ⲿ�ж�(INT)���ܳ�ʼ����������******************************************/
+/* 外部中断(INT)功能初始化函数定义******************************************/
 void INT_External_Configuration (EINT_InitTypeDef* eintInitStruct);
 void INT_External_Struct_Init (EINT_InitTypeDef* eintInitStruct);
-/* �ⲿ�ж�(INT)�������ú�������********************************************/
+/* 外部中断(INT)功能配置函数定义********************************************/
 void INT_External_Mask_Enable (uint32_t EintMask, FunctionalState NewState);
 void INT_External_Rise_Enable (uint32_t EintMask, FunctionalState NewState);
 void INT_External_Fall_Enable (uint32_t EintMask, FunctionalState NewState);
