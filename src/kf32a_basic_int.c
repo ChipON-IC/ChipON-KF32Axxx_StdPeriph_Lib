@@ -1,41 +1,41 @@
-/**
+/***
   ******************************************************************************
-  * 文件名  kf32a_basic_int.c
-  * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.61
-  * 日  期  2019-11-16
-  * 描  述  该文件提供了中断相关的功能函数，包含：
-  *          + 中断(INT)功能配置函数定义
-  *          + 外部中断(INT)功能初始化函数定义
-  *          + 外部中断(INT)功能配置函数定义
+  * �ļ���  kf32a_basic_int.c
+  * ��  ��  ChipON_AE/FAE_Group
+  * ��  ��  V2.61
+  * ��  ��  2019-11-16
+  * ��  ��  ���ļ��ṩ���ж���صĹ��ܺ�����������
+  *          + �ж�(INT)�������ú�������
+  *          + �ⲿ�ж�(INT)���ܳ�ʼ����������
+  *          + �ⲿ�ж�(INT)�������ú�������
   *
   *********************************************************************
   */
 
 #include "kf32a_basic_int.h"
 
-/* 中断定时器私有定义 ----------------------------------------------------*/
-/* INT_IP寄存器配置掩码 */
+/* �ж϶�ʱ��˽�ж��� ----------------------------------------------------*/
+/* INT_IP�Ĵ����������� */
 #define INT_IP_INIT_MASK                ((uint32_t)0xF)
 
-/* INT_EINTSSx寄存器配置掩码 */
+/* INT_EINTSSx�Ĵ����������� */
 #define INT_EINTSS_INIT_MASK            ((uint32_t)0x7)
 
 
 /**
-  *   ##### 中断(INT)功能配置函数定义 #####
+  *   ##### �ж�(INT)�������ú������� #####
   */
 /**
-  * 描述  获取当前正在处理的中断向量编号。
-  * 输入  无。
-  * 返回  当前中断向量编号，7位有效数据。
+  * ����  ��ȡ��ǰ���ڴ������ж�������š�
+  * ����  �ޡ�
+  * ����  ��ǰ�ж�������ţ�7λ��Ч���ݡ�
   */
 uint8_t
 INT_Get_Interrupt_Action (void)
 {
     uint32_t tmpreg = 0;
 
-    /* 读取INT_CTL0寄存器INTACT位域 */
+    /* ��ȡINT_CTL0�Ĵ���INTACTλ�� */
     tmpreg = INT_CTL0;
     tmpreg &= INT_CTL0_INTACT;
     tmpreg >>= INT_CTL0_INTACT0_POS;
@@ -44,16 +44,16 @@ INT_Get_Interrupt_Action (void)
 }
 
 /**
-  * 描述  获取当前待响应的最高优先级中断向量编号。
-  * 输入  无。
-  * 返回  待响应的最高优先级中断向量编号，7位有效数据。
+  * ����  ��ȡ��ǰ����Ӧ��������ȼ��ж�������š�
+  * ����  �ޡ�
+  * ����  ����Ӧ��������ȼ��ж�������ţ�7λ��Ч���ݡ�
   */
 uint8_t
 INT_Get_Priority_Pending_Action (void)
 {
     uint32_t tmpreg = 0;
 
-    /* 读取INT_CTL0寄存器INTPEND位域 */
+    /* ��ȡINT_CTL0�Ĵ���INTPENDλ�� */
     tmpreg = INT_CTL0;
     tmpreg &= INT_CTL0_INTPEND;
     tmpreg >>= INT_CTL0_INTPEND0_POS;
@@ -62,9 +62,9 @@ INT_Get_Priority_Pending_Action (void)
 }
 
 /**
-  * 描述  设置优先级响应基级。
-  * 输入  PriBase: 优先级响应基级，取值4位数据。
-  * 返回  无。
+  * ����  �������ȼ���Ӧ������
+  * ����  PriBase: ���ȼ���Ӧ������ȡֵ4λ���ݡ�
+  * ����  �ޡ�
   */
 void
 INT_Priority_Base (uint8_t PriBase)
@@ -73,8 +73,8 @@ INT_Priority_Base (uint8_t PriBase)
 
     CHECK_RESTRICTION(CHECK_INT_PRIORITY_BASE(PriBase));
 
-    /*------------------ 设置INT_CTL0寄存器 -----------------*/
-    /* 根据参数PriBase，设置PRIBASE位域 */
+    /*------------------ ����INT_CTL0�Ĵ��� -----------------*/
+    /* ���ݲ���PriBase������PRIBASEλ�� */
     tmpreg = (uint32_t)PriBase << INT_CTL0_PRIBASE0_POS;
     INT_CTL0 = SFR_Config (INT_CTL0,
                           ~INT_CTL0_PRIBASE,
@@ -82,16 +82,16 @@ INT_Priority_Base (uint8_t PriBase)
 }
 
 /**
-  * 描述  获取优先级响应基级。
-  * 输入  无。
-  * 返回  优先级响应基级，4位有效数据。
+  * ����  ��ȡ���ȼ���Ӧ������
+  * ����  �ޡ�
+  * ����  ���ȼ���Ӧ������4λ��Ч���ݡ�
   */
 uint8_t
 INT_Get_Priority_Base (void)
 {
     uint32_t tmpreg = 0;
 
-    /* 读取INT_CTL0寄存器PRIBASE位域 */
+    /* ��ȡINT_CTL0�Ĵ���PRIBASEλ�� */
     tmpreg = INT_CTL0;
     tmpreg &= INT_CTL0_PRIBASE;
     tmpreg >>= INT_CTL0_PRIBASE0_POS;
@@ -100,136 +100,136 @@ INT_Get_Priority_Base (void)
 }
 
 /**
-  * 描述  设置中断自动堆栈对齐选择。
-  * 输入  StackAlign: 中断自动堆栈对齐选择，
-  *                   取值为：
-  *                     INT_STACK_DOUBLE_ALIGN: 中断自动堆栈使用双字对齐
-  *                     INT_STACK_SINGLE_ALIGN: 中断自动堆栈使用单字对齐
-  * 返回  无。
+  * ����  �����ж��Զ���ջ����ѡ��
+  * ����  StackAlign: �ж��Զ���ջ����ѡ��
+  *                   ȡֵΪ��
+  *                     INT_STACK_DOUBLE_ALIGN: �ж��Զ���ջʹ��˫�ֶ���
+  *                     INT_STACK_SINGLE_ALIGN: �ж��Զ���ջʹ�õ��ֶ���
+  * ����  �ޡ�
   */
 void
 INT_Stack_Align_Config (uint32_t StackAlign)
 {
     CHECK_RESTRICTION(CHECK_INT_STACK_ALIGN(StackAlign));
 
-    /*---------------- 设置INT_CTL0寄存器DSALIGN位 ----------------*/
+    /*---------------- ����INT_CTL0�Ĵ���DSALIGNλ ----------------*/
     if (StackAlign != INT_STACK_DOUBLE_ALIGN)
     {
-        /* 中断自动堆栈使用单字对齐 */
+        /* �ж��Զ���ջʹ�õ��ֶ��� */
         SFR_SET_BIT_ASM(INT_CTL0, INT_CTL0_DSALIGN_POS);
     }
     else
     {
-        /* 中断自动堆栈使用双字对齐 */
+        /* �ж��Զ���ջʹ��˫�ֶ��� */
         SFR_CLR_BIT_ASM(INT_CTL0, INT_CTL0_DSALIGN_POS);
     }
 }
 
 /**
-  * 描述  设置硬件错误中断屏蔽位。
-  * 输入  NewState: 中断自动堆栈对齐选择，
-  *                 取值范围为：TRUE 或 FALSE。
-  * 返回  无。
+  * ����  ����Ӳ�������ж�����λ��
+  * ����  NewState: �ж��Զ���ջ����ѡ��
+  *                 ȡֵ��ΧΪ��TRUE �� FALSE��
+  * ����  �ޡ�
   */
 void
 INT_Fault_Masking_Config (FunctionalState NewState)
 {
     CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(NewState));
 
-    /*---------------- 设置INT_CTL0寄存器FAULTMASK位 ----------------*/
+    /*---------------- ����INT_CTL0�Ĵ���FAULTMASKλ ----------------*/
     if (NewState != FALSE)
     {
-        /* FAULT异常及优先级可配置中断被屏蔽 */
+        /* FAULT�쳣�����ȼ��������жϱ����� */
         SFR_SET_BIT_ASM(INT_CTL0, INT_CTL0_FAULTMASK_POS);
     }
     else
     {
-        /* FAULT异常未屏蔽 */
+        /* FAULT�쳣δ���� */
         SFR_CLR_BIT_ASM(INT_CTL0, INT_CTL0_FAULTMASK_POS);
     }
 }
 
 /**
-  * 描述  判断是否一个悬起的中断将在下一步时进入活动状态。
-  * 输入  无。
-  * 返回  1:进入活动状态；0:不进入活动状态。
+  * ����  �ж��Ƿ�һ��������жϽ�����һ��ʱ����״̬��
+  * ����  �ޡ�
+  * ����  1:����״̬��0:������״̬��
   */
 FlagStatus
 INT_Get_Pre_Empty (void)
 {
     uint32_t tmpreg = 0;
 
-    /*---------------- 设置INT_CTL0寄存器INTPREEMPT位 ----------------*/
+    /*---------------- ����INT_CTL0�Ĵ���INTPREEMPTλ ----------------*/
     tmpreg = INT_CTL0;
     if (tmpreg & INT_CTL0_INTPREEMPT)
     {
-        /* 悬起的中断将在下一步时进入活动状态 */
+        /* ������жϽ�����һ��ʱ����״̬ */
         return SET;
     }
     else
     {
-        /* 中断不进入活动状态 */
+        /* �жϲ�����״̬ */
         return RESET;
     }
 }
 
 /**
-  * 描述  判断当前是否有除NMI之外的中断挂起。
-  * 输入  无。
-  * 返回  1:有除NMI之外的中断挂起；0:没有除NMI之外的中断挂起。
+  * ����  �жϵ�ǰ�Ƿ��г�NMI֮����жϹ���
+  * ����  �ޡ�
+  * ����  1:�г�NMI֮����жϹ���0:û�г�NMI֮����жϹ���
   */
 FlagStatus
 INT_Get_Pending_Flag (void)
 {
     uint32_t tmpreg = 0;
 
-    /*---------------- 设置INT_CTL0寄存器INTPENDING位 ----------------*/
+    /*---------------- ����INT_CTL0�Ĵ���INTPENDINGλ ----------------*/
     tmpreg = INT_CTL0;
     if (tmpreg & INT_CTL0_INTPENDING)
     {
-        /* 有除NMI之外的中断挂起 */
+        /* �г�NMI֮����жϹ��� */
         return SET;
     }
     else
     {
-        /* 没有除NMI之外的中断挂起 */
+        /* û�г�NMI֮����жϹ��� */
         return RESET;
     }
 }
 
 /**
-  * 描述  设置优先级分组。
-  * 输入  PriorityGroup: 中断自动堆栈对齐选择，
-  *                      取值范围为：
-  *                        INT_PRIORITY_GROUP_3VS1: 抢占优先级为3位，子优先级为1位
-  *                        INT_PRIORITY_GROUP_2VS2: 抢占优先级为2位，子优先级为2位
-  *                        INT_PRIORITY_GROUP_1VS3: 抢占优先级为1位，子优先级为3位
-  *                        INT_PRIORITY_GROUP_0VS4: 抢占优先级为0位，子优先级为4位
-  * 返回  无。
+  * ����  �������ȼ����顣
+  * ����  PriorityGroup: �ж��Զ���ջ����ѡ��
+  *                      ȡֵ��ΧΪ��
+  *                        INT_PRIORITY_GROUP_3VS1: ��ռ���ȼ�Ϊ3λ�������ȼ�Ϊ1λ
+  *                        INT_PRIORITY_GROUP_2VS2: ��ռ���ȼ�Ϊ2λ�������ȼ�Ϊ2λ
+  *                        INT_PRIORITY_GROUP_1VS3: ��ռ���ȼ�Ϊ1λ�������ȼ�Ϊ3λ
+  *                        INT_PRIORITY_GROUP_0VS4: ��ռ���ȼ�Ϊ0λ�������ȼ�Ϊ4λ
+  * ����  �ޡ�
   */
 void
 INT_Priority_Group_Config (uint32_t PriorityGroup)
 {
     CHECK_RESTRICTION(CHECK_INT_PRIORITY_GROUP(PriorityGroup));
 
-    /*------------------ 设置INT_CTL0寄存器 -----------------*/
-    /* 根据参数PriorityGroup，设置PRIGROUP位域 */
+    /*------------------ ����INT_CTL0�Ĵ��� -----------------*/
+    /* ���ݲ���PriorityGroup������PRIGROUPλ�� */
     INT_CTL0 = SFR_Config (INT_CTL0,
                           ~INT_CTL0_PRIGROUP,
                           PriorityGroup);
 }
 
 /**
-  * 描述  获取优先级分组。
-  * 输入  无。
-  * 返回  优先级分组位域配置，32位有效数据。
+  * ����  ��ȡ���ȼ����顣
+  * ����  �ޡ�
+  * ����  ���ȼ�����λ�����ã�32λ��Ч���ݡ�
   */
 uint32_t
 INT_Get_Priority_Group (void)
 {
     uint32_t tmpreg = 0;
 
-    /*------------------ 读取INT_CTL0寄存器 -----------------*/
+    /*------------------ ��ȡINT_CTL0�Ĵ��� -----------------*/
     tmpreg = INT_CTL0;
     tmpreg &= INT_CTL0_PRIGROUP;
 
@@ -237,38 +237,38 @@ INT_Get_Priority_Group (void)
 }
 
 /**
-  * 描述  全局可屏蔽中断使能位，该中断使能控制不包含复位/NMI/硬件错误中断。
-  * 输入  NewState: 全局可屏蔽中断使能，
-  *                 取值范围为：TRUE 或 FALSE。
-  * 返回  无。
+  * ����  ȫ�ֿ������ж�ʹ��λ�����ж�ʹ�ܿ��Ʋ�������λ/NMI/Ӳ�������жϡ�
+  * ����  NewState: ȫ�ֿ������ж�ʹ�ܣ�
+  *                 ȡֵ��ΧΪ��TRUE �� FALSE��
+  * ����  �ޡ�
   */
 void
 INT_All_Enable (FunctionalState NewState)
 {
-    /* 参数校验 */
+    /* ����У�� */
     CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(NewState));
 
-    /*---------------- 设置INT_CTL0寄存器AIE位 ----------------*/
+    /*---------------- ����INT_CTL0�Ĵ���AIEλ ----------------*/
     if (NewState != FALSE)
     {
-        /* 全局可屏蔽中断使能 */
+        /* ȫ�ֿ������ж�ʹ�� */
         SFR_SET_BIT_ASM(INT_CTL0, INT_CTL0_AIE_POS);
     }
     else
     {
-        /* 全局可屏蔽中断禁止 */
+        /* ȫ�ֿ������жϽ�ֹ */
         SFR_CLR_BIT_ASM(INT_CTL0, INT_CTL0_AIE_POS);
     }
 }
 
 /**
-  * 描述  外设或内核中断使能控制，对于用户未定义的保留区中断向量，
-  *       可能出现未知结果。
-  * 输入  Peripheral: 外设或内核中断向量编号，取值范围为：
-  *                   枚举类型InterruptIndex中的外设中断向量编号。
-  *       NewState: 外设或内核中断使能状态，
-  *                 取值范围为：TRUE 或 FALSE。
-  * 返回  无。
+  * ����  ������ں��ж�ʹ�ܿ��ƣ������û�δ����ı������ж�������
+  *       ���ܳ���δ֪�����
+  * ����  Peripheral: ������ں��ж�������ţ�ȡֵ��ΧΪ��
+  *                   ö������InterruptIndex�е������ж�������š�
+  *       NewState: ������ں��ж�ʹ��״̬��
+  *                 ȡֵ��ΧΪ��TRUE �� FALSE��
+  * ����  �ޡ�
   */
 void
 INT_Interrupt_Enable (InterruptIndex Peripheral, FunctionalState NewState)
@@ -276,13 +276,13 @@ INT_Interrupt_Enable (InterruptIndex Peripheral, FunctionalState NewState)
     uint32_t tmpreg = 0;
     uint32_t tmpreg1 = 0;
 
-    /* 参数校验 */
+    /* ����У�� */
     CHECK_RESTRICTION(CHECK_PERIPHERAL_INTERRUPT_INDEX(Peripheral));
     CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(NewState));
 
     if (Peripheral <= INT_SysTick)
     {
-        /*---------------- 设置INT_EIE0寄存器 ----------------*/
+        /*---------------- ����INT_EIE0�Ĵ��� ----------------*/
         tmpreg = Peripheral - INT_StackFault;
         tmpreg1 = INT_EIE0_STACKIE << tmpreg;
         INT_EIE0 = SFR_Config (INT_EIE0,
@@ -291,7 +291,7 @@ INT_Interrupt_Enable (InterruptIndex Peripheral, FunctionalState NewState)
     }
     else if (Peripheral <= INT_SPI1)
     {
-        /*---------------- 设置INT_EIE1寄存器 ----------------*/
+        /*---------------- ����INT_EIE1�Ĵ��� ----------------*/
         tmpreg = Peripheral - INT_WWDT;
         tmpreg1 = INT_EIE1_WWDTIE << tmpreg;
         INT_EIE1 = SFR_Config (INT_EIE1,
@@ -300,7 +300,7 @@ INT_Interrupt_Enable (InterruptIndex Peripheral, FunctionalState NewState)
     }
     else if (Peripheral <= INT_USART7)
     {
-        /*---------------- 设置INT_EIE2寄存器 ----------------*/
+        /*---------------- ����INT_EIE2�Ĵ��� ----------------*/
         tmpreg = Peripheral - INT_DMA1;
         tmpreg1 = INT_EIE2_DMA1IE << tmpreg;
         INT_EIE2 = SFR_Config (INT_EIE2,
@@ -309,15 +309,15 @@ INT_Interrupt_Enable (InterruptIndex Peripheral, FunctionalState NewState)
     }
     else
     {
-        /*---------------- 设置INT_EIE4寄存器 ----------------*/
-        /*---------------- 保留，可作为软件中断 ----------------*/
+        /*---------------- ����INT_EIE4�Ĵ��� ----------------*/
+        /*---------------- ����������Ϊ�����ж� ----------------*/
     }
 }
 
 /**
-  * 描述  SYSTICK中断标志软件置位。
-  * 输入  无。
-  * 返回  无。
+  * ����  SYSTICK�жϱ�־������λ��
+  * ����  �ޡ�
+  * ����  �ޡ�
   */
 void
 INT_Set_Systick_Flag (void)
@@ -326,9 +326,9 @@ INT_Set_Systick_Flag (void)
 }
 
 /**
-  * 描述  PendSV中断标志软件置位。
-  * 输入  无。
-  * 返回  无。
+  * ����  PendSV�жϱ�־������λ��
+  * ����  �ޡ�
+  * ����  �ޡ�
   */
 void
 INT_Set_PendSV_Flag (void)
@@ -337,11 +337,11 @@ INT_Set_PendSV_Flag (void)
 }
 
 /**
-  * 描述  获取外设或内核中断标志，对于用户未定义的保留区中断向量，
-  *       可能出现未知结果。
-  * 输入  Peripheral: 外设或内核中断向量编号，取值范围为：
-  *                   枚举类型InterruptIndex中的外设中断向量编号。
-  * 返回  无。
+  * ����  ��ȡ������ں��жϱ�־�������û�δ����ı������ж�������
+  *       ���ܳ���δ֪�����
+  * ����  Peripheral: ������ں��ж�������ţ�ȡֵ��ΧΪ��
+  *                   ö������InterruptIndex�е������ж�������š�
+  * ����  �ޡ�
   */
 FlagStatus
 INT_Get_Interrupt_Flag (InterruptIndex Peripheral)
@@ -349,71 +349,71 @@ INT_Get_Interrupt_Flag (InterruptIndex Peripheral)
     uint32_t tmpreg = 0;
     uint32_t tmpreg1 = 0;
 
-    /* 参数校验 */
+    /* ����У�� */
     CHECK_RESTRICTION(CHECK_PERIPHERAL_INTERRUPT_INDEX(Peripheral));
 
     if (Peripheral <= INT_SysTick)
     {
-        /*---------------- 设置INT_EIF0寄存器 ----------------*/
+        /*---------------- ����INT_EIF0�Ĵ��� ----------------*/
         tmpreg = INT_EIF0_NMIIF << (Peripheral - INT_NMI);
         tmpreg1 = INT_EIF0;
         if (INT_EIF0 & tmpreg)
         {
-            /* 中断挂起 */
+            /* �жϹ��� */
             return SET;
         }
         else
         {
-            /* 无中断挂起 */
+            /* ���жϹ��� */
             return RESET;
         }
     }
     else if (Peripheral <= INT_SPI1)
     {
-        /*---------------- 设置INT_EIF1寄存器 ----------------*/
+        /*---------------- ����INT_EIF1�Ĵ��� ----------------*/
         tmpreg = INT_EIF1_WWDTIF << (Peripheral - INT_WWDT);
         tmpreg1 = INT_EIF1;
         if (INT_EIF1 & tmpreg)
         {
-            /* 中断挂起 */
+            /* �жϹ��� */
             return SET;
         }
         else
         {
-            /* 无中断挂起 */
+            /* ���жϹ��� */
             return RESET;
         }
     }
     else if (Peripheral <= INT_USART7)
     {
-        /*---------------- 设置INT_EIF2寄存器 ----------------*/
+        /*---------------- ����INT_EIF2�Ĵ��� ----------------*/
         tmpreg = INT_EIF2_DMA1IF << (Peripheral - INT_DMA1);
         tmpreg1 = INT_EIF2;
 
     }
     else
     {
-        /*---------------- 设置INT_EIF4寄存器 ----------------*/
-        /*---------------- 保留，可作为软件中断 ----------------*/
+        /*---------------- ����INT_EIF4�Ĵ��� ----------------*/
+        /*---------------- ����������Ϊ�����ж� ----------------*/
     }
 
-    /*---------------- 检验对应中断标志位状态 ----------------*/
+    /*---------------- �����Ӧ�жϱ�־λ״̬ ----------------*/
     if ((*(volatile uint32_t*)tmpreg1) & tmpreg)
     {
-        /* 中断挂起 */
+        /* �жϹ��� */
         return SET;
     }
     else
     {
-        /* 无中断挂起 */
+        /* ���жϹ��� */
         return RESET;
     }
 }
 /**
-  * 描述 清外设或内核中断标志
-  * 输入  Peripheral: 外设或内核中断向量编号，取值范围为：
-  *                   枚举类型InterruptIndex中的外设中断向量编号。
-  * 返回  无。
+  * ���� ��������ں��жϱ�־
+  * ����  Peripheral: ������ں��ж�������ţ�ȡֵ��ΧΪ��
+  *                   ö������InterruptIndex�е������ж�������š�
+  * ����  �ޡ�
   */
 void
 INT_Clear_Interrupt_Flag (InterruptIndex Peripheral)
@@ -421,51 +421,51 @@ INT_Clear_Interrupt_Flag (InterruptIndex Peripheral)
     uint32_t tmpreg = 0;
     volatile uint32_t *tmpreg1 = 0;
 
-    /* 参数校验 */
+    /* ����У�� */
     CHECK_RESTRICTION(CHECK_PERIPHERAL_INTERRUPT_INDEX(Peripheral));
 
     if (Peripheral <= INT_SysTick)
     {
-        /*---------------- 设置INT_EIF0寄存器 ----------------*/
+        /*---------------- ����INT_EIF0�Ĵ��� ----------------*/
         tmpreg = INT_EIF0_NMIIF << (Peripheral - INT_NMI);
         tmpreg1 = &INT_EIF0;
     }
     else if (Peripheral <= INT_SPI1)
     {
-        /*---------------- 设置INT_EIF1寄存器 ----------------*/
+        /*---------------- ����INT_EIF1�Ĵ��� ----------------*/
         tmpreg = INT_EIF1_WWDTIF << (Peripheral - INT_WWDT);
         tmpreg1 = &INT_EIF1;
     }
     else if (Peripheral <= INT_USART7)
     {
-        /*---------------- 设置INT_EIF2寄存器 ----------------*/
+        /*---------------- ����INT_EIF2�Ĵ��� ----------------*/
         tmpreg = INT_EIF2_DMA1IF << (Peripheral - INT_DMA1);
         tmpreg1 = &INT_EIF2;
     }
     else
     {
-        /*---------------- 设置INT_EIF4寄存器 ----------------*/
-        /*---------------- 保留，可作为软件中断 ----------------*/
+        /*---------------- ����INT_EIF4�Ĵ��� ----------------*/
+        /*---------------- ����������Ϊ�����ж� ----------------*/
     }
 
-    /*---------------- 清对应中断标志位状态 ----------------*/
+    /*---------------- ���Ӧ�жϱ�־λ״̬ ----------------*/
     //(*(volatile uint32_t*)tmpreg1) &= ~tmpreg;
     *tmpreg1 &= ~tmpreg;
 
 }
 /**
-  * 描述  外设或内核中断优先级配置，对于用户未定义的保留区中断向量，
-  *       可能出现未知结果。
-  * 输入  Peripheral: 外设或内核中断向量编号，取值范围为：
-  *                   枚举类型InterruptIndex中的外设中断向量编号。
-  *       Preemption: 抢占优先级，同时满足PRIGROUP设置。
-  *       SubPriority: 子优先级， 同时满足PRIGROUP设置。
-  *       (GROUP) == INT_PRIORITY_GROUP_3VS1时：Preemption取值范围为：0~7，SubPriority取值范围为：0~1
-  *       (GROUP) == INT_PRIORITY_GROUP_2VS2时：Preemption取值范围为：0~3，SubPriority取值范围为：0~3
-  *       (GROUP) == INT_PRIORITY_GROUP_1VS3时：Preemption取值范围为：0~1，SubPriority取值范围为：0~7
-  *       (GROUP) == INT_PRIORITY_GROUP_0VS4时：Preemption取值范围为：0~0，SubPriority取值范围为：0~15
+  * ����  ������ں��ж����ȼ����ã������û�δ����ı������ж�������
+  *       ���ܳ���δ֪�����
+  * ����  Peripheral: ������ں��ж�������ţ�ȡֵ��ΧΪ��
+  *                   ö������InterruptIndex�е������ж�������š�
+  *       Preemption: ��ռ���ȼ���ͬʱ����PRIGROUP���á�
+  *       SubPriority: �����ȼ��� ͬʱ����PRIGROUP���á�
+  *       (GROUP) == INT_PRIORITY_GROUP_3VS1ʱ��Preemptionȡֵ��ΧΪ��0~7��SubPriorityȡֵ��ΧΪ��0~1
+  *       (GROUP) == INT_PRIORITY_GROUP_2VS2ʱ��Preemptionȡֵ��ΧΪ��0~3��SubPriorityȡֵ��ΧΪ��0~3
+  *       (GROUP) == INT_PRIORITY_GROUP_1VS3ʱ��Preemptionȡֵ��ΧΪ��0~1��SubPriorityȡֵ��ΧΪ��0~7
+  *       (GROUP) == INT_PRIORITY_GROUP_0VS4ʱ��Preemptionȡֵ��ΧΪ��0~0��SubPriorityȡֵ��ΧΪ��0~15
   *
-  * 返回  无。
+  * ����  �ޡ�
   */
 void
 INT_Interrupt_Priority_Config (InterruptIndex Peripheral,
@@ -476,15 +476,15 @@ INT_Interrupt_Priority_Config (InterruptIndex Peripheral,
     uint32_t bitoffset = 0;
     uint32_t priorityconfig = 0;
 
-    /*--------- 获取INT_CTL0寄存器的PRIGROUP位 ---------*/
+    /*--------- ��ȡINT_CTL0�Ĵ�����PRIGROUPλ ---------*/
     tmpreg = INT_CTL0;
     tmpreg &= INT_CTL0_PRIGROUP;
 
-    /* 参数校验 */
+    /* ����У�� */
     CHECK_RESTRICTION(CHECK_PERIPHERAL_INTERRUPT_INDEX(Peripheral));
     CHECK_RESTRICTION(CHECK_PRIORITY_CONFIG(tmpreg, Preemption, SubPriority));
 
-    /*--------- 获取中断优先级控制位的值 ---------*/
+    /*--------- ��ȡ�ж����ȼ�����λ��ֵ ---------*/
     switch (tmpreg)
     {
     case INT_PRIORITY_GROUP_3VS1:
@@ -504,11 +504,11 @@ INT_Interrupt_Priority_Config (InterruptIndex Peripheral,
         break;
     }
 
-    /*--------- 配置中断优先级控制位 ---------*/
+    /*--------- �����ж����ȼ�����λ ---------*/
     if (Peripheral <= INT_USART7)
     {
-        /*---------------- 设置INT_IPx(x=0~18)寄存器 ----------------*/
-        /* 获取中断优先级寄存器地址 */
+        /*---------------- ����INT_IPx(x=0~18)�Ĵ��� ----------------*/
+        /* ��ȡ�ж����ȼ��Ĵ�����ַ */
         regoffset = (Peripheral - INT_Reserved4) >> 2;
         tmpreg = (uint32_t)&INT_IP0;
         tmpreg = tmpreg + (regoffset << 2);
@@ -517,7 +517,7 @@ INT_Interrupt_Priority_Config (InterruptIndex Peripheral,
     {
     }
 
-    /*---------------- 设置INT_IPx(x=0~30)寄存器 ----------------*/
+    /*---------------- ����INT_IPx(x=0~30)�Ĵ��� ----------------*/
     bitoffset = ((Peripheral & 0x3) * 8) + 4;
     *(volatile uint32_t*)tmpreg
           = SFR_Config (*(volatile uint32_t*)tmpreg,
@@ -526,58 +526,58 @@ INT_Interrupt_Priority_Config (InterruptIndex Peripheral,
 }
 
 /**
-  * 描述  外设或内核中断优先级配置，对于用户未定义的保留区中断向量，
-  *       可能出现未知结果。
-  * 输入  Peripheral: 外设或内核中断向量编号，取值范围为：
-  *                   枚举类型InterruptIndex中的外设中断向量编号。
-  *       Priority: 优先级，同时满足PRIGROUP设置。
-  *       Priority取值范围为：0~15
-  *
-  * 返回  无。
-  */
+??*?����??������ں��ж����ȼ����ã������û�δ����ı������ж�������
+??*???????���ܳ���δ֪�����
+??*?����??Peripheral:?������ں��ж�������ţ�ȡֵ��ΧΪ��
+??*???????????????????ö������InterruptIndex�е������ж�������š�
+??*???????Priority:?���ȼ���ͬʱ����PRIGROUP���á�
+??*???????Priorityȡֵ��ΧΪ��0~15
+??*
+??*?����??�ޡ�
+??*/
 void
-INT_Set_Interrupt_Priority (InterruptIndex Peripheral, uint32_t Priority)
+INT_Set_Interrupt_Priority?(InterruptIndex?Peripheral,?uint32_t?Priority)
 {
-    uint32_t tmpreg = 0;
-    uint32_t regoffset = 0;
-    uint32_t bitoffset = 0;
+????uint32_t?tmpreg?=?0;
+????uint32_t?regoffset?=?0;
+????uint32_t?bitoffset?=?0;
 
-    regoffset = (Peripheral - INT_Reserved4) >> 2;
-    tmpreg = (uint32_t)&INT_IP0;
-    tmpreg = tmpreg + (regoffset << 2);
-    bitoffset = ((Peripheral & 0x3) << 0X03) + 4;
-    *(volatile uint32_t*)tmpreg
-                = SFR_Config (*(volatile uint32_t*)tmpreg,
-                ~((uint32_t)0x0f << bitoffset),
-                Priority << bitoffset);
+????regoffset?=?(Peripheral?-?INT_Reserved4)?>>?2;
+????tmpreg?=?(uint32_t)&INT_IP0;
+????tmpreg?=?tmpreg?+?(regoffset?<<?2);
+????bitoffset?=?((Peripheral?&?0x3)?<<?0X03)?+?4;
+????*(volatile?uint32_t*)tmpreg
+????????????????=?SFR_Config?(*(volatile?uint32_t*)tmpreg,
+????????????????~((uint32_t)0x0f?<<?bitoffset),
+????????????????Priority?<<?bitoffset);
 }
 
 
 /**
-  * 描述  中断延时配置。
-  * 输入  IntDelay: 中断延时控制，取值8位数据。
-  * 返回  无。
+  * ����  �ж���ʱ���á�
+  * ����  IntDelay: �ж���ʱ���ƣ�ȡֵ8λ���ݡ�
+  * ����  �ޡ�
   */
 void
 INT_Stack_Delay_Enable (uint8_t IntDelay)
 {
-    /*---------------- 设置INT_CTL1寄存器INTDELY位 ----------------*/
+    /*---------------- ����INT_CTL1�Ĵ���INTDELYλ ----------------*/
     INT_CTL1 = SFR_Config (INT_CTL1,
                       ~(INT_CTL1_INTDELY),
                       (uint32_t)IntDelay << INT_CTL1_INTDELY0_POS);
 }
 /**
-  *   ##### 中断(INT)功能配置函数定义结束 #####
+  *   ##### �ж�(INT)�������ú���������� #####
   */
 
 
 /**
-  *   ##### 外部中断(INT)功能初始化函数定义 #####
+  *   ##### �ⲿ�ж�(INT)���ܳ�ʼ���������� #####
   */
 /**
-  * 描述  外部中断(EINT)配置，并使能中断。
-  * 输入  eintInitStruct: 外部中断配置信息结构体指针。
-  * 返回  无。
+  * ����  �ⲿ�ж�(EINT)���ã���ʹ���жϡ�
+  * ����  eintInitStruct: �ⲿ�ж�������Ϣ�ṹ��ָ�롣
+  * ����  �ޡ�
   */
 void
 INT_External_Configuration (EINT_InitTypeDef* eintInitStruct)
@@ -585,7 +585,7 @@ INT_External_Configuration (EINT_InitTypeDef* eintInitStruct)
     uint32_t eintoffset = 0;
     uint32_t tmpreg = 0;
 
-    /* 参数校验 */
+    /* ����У�� */
     CHECK_RESTRICTION(CHECK_INT_EXTERNAL_NUM(eintInitStruct->m_Line));
     CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(eintInitStruct->m_Mask));
     CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(eintInitStruct->m_Rise));
@@ -593,23 +593,23 @@ INT_External_Configuration (EINT_InitTypeDef* eintInitStruct)
     CHECK_RESTRICTION(CHECK_INT_EXTERNAL_SOURCE(eintInitStruct->m_Source));
 
     eintoffset = eintInitStruct->m_Line;
-    /* 使能上升沿中断 */
-    /*------------------ 设置INT_EINTRISE寄存器 -----------------*/
-    /* 根据结构体成员m_Line和m_Rise，设置EINTRI位域 */
+    /* ʹ���������ж� */
+    /*------------------ ����INT_EINTRISE�Ĵ��� -----------------*/
+    /* ���ݽṹ���Աm_Line��m_Rise������EINTRIλ�� */
     INT_EINTRISE = SFR_Config (INT_EINTRISE,
                           ~(INT_EINTRISE_EINTRI0 << eintoffset),
                           eintInitStruct->m_Rise << eintoffset);
 
-    /* 使能下降沿中断 */
-    /*------------------ 设置INT_EINTFALL寄存器 -----------------*/
-    /* 根据结构体成员m_Line和m_Fall，设置EINTFA位域 */
+    /* ʹ���½����ж� */
+    /*------------------ ����INT_EINTFALL�Ĵ��� -----------------*/
+    /* ���ݽṹ���Աm_Line��m_Fall������EINTFAλ�� */
     INT_EINTFALL = SFR_Config (INT_EINTFALL,
                           ~(INT_EINTFALL_EINTFA0 << eintoffset),
                           eintInitStruct->m_Fall << eintoffset);
 
-    /* 选择中断源 */
-    /*------------------ 设置INT_EINTSSx寄存器 -----------------*/
-    /* 根据结构体成员m_Line和m_Source，设置EINTRI位域 */
+    /* ѡ���ж�Դ */
+    /*------------------ ����INT_EINTSSx�Ĵ��� -----------------*/
+    /* ���ݽṹ���Աm_Line��m_Source������EINTRIλ�� */
     if (eintoffset < 8)
     {
         tmpreg = eintInitStruct->m_Line * 4;
@@ -628,56 +628,56 @@ INT_External_Configuration (EINT_InitTypeDef* eintInitStruct)
     {
     }
 
-    /* 使能外部中断 */
-    /*------------------ 设置INT_EINTMASK寄存器 -----------------*/
-    /* 根据结构体成员m_Line和m_Mask，设置EINTM位域 */
+    /* ʹ���ⲿ�ж� */
+    /*------------------ ����INT_EINTMASK�Ĵ��� -----------------*/
+    /* ���ݽṹ���Աm_Line��m_Mask������EINTMλ�� */
     INT_EINTMASK = SFR_Config (INT_EINTMASK,
                           ~(INT_EINTMASK_EINTM0 << eintoffset),
                           eintInitStruct->m_Mask << eintoffset);
 }
 
 /**
-  * 描述  初始化外部中断(EINT)配置信息结构体。
-  * 输入  eintInitStruct: 指向待初始化的结构体指针。
-  * 返回  无。
+  * ����  ��ʼ���ⲿ�ж�(EINT)������Ϣ�ṹ�塣
+  * ����  eintInitStruct: ָ�����ʼ���Ľṹ��ָ�롣
+  * ����  �ޡ�
   */
 void
 INT_External_Struct_Init (EINT_InitTypeDef* eintInitStruct)
 {
-    /* 设置外部中断编号 */
+    /* �����ⲿ�жϱ�� */
     eintInitStruct->m_Line = INT_EXTERNAL_INTERRUPT_0;
-    /* 设置外部中断使能控制 */
+    /* �����ⲿ�ж�ʹ�ܿ��� */
     eintInitStruct->m_Mask = FALSE;
-    /* 设置外部中断上升沿中断使能 */
+    /* �����ⲿ�ж��������ж�ʹ�� */
     eintInitStruct->m_Rise = FALSE;
-    /* 设置外部中断下降沿中断使能 */
+    /* �����ⲿ�ж��½����ж�ʹ�� */
     eintInitStruct->m_Fall = FALSE;
-    /* 设置外部中断的中断源选择 */
+    /* �����ⲿ�жϵ��ж�Դѡ�� */
     eintInitStruct->m_Source = INT_EXTERNAL_SOURCE_PA;
 }
 /**
-  *   ##### 外部中断(INT)功能初始化函数定义结束 #####
+  *   ##### �ⲿ�ж�(INT)���ܳ�ʼ������������� #####
   */
 
 
 /**
-  *   ##### 外部中断(INT)功能配置函数定义 #####
+  *   ##### �ⲿ�ж�(INT)�������ú������� #####
   */
 /**
-  * 描述  外部中断(EINT)使能配置。
-  * 输入  EintMask: 外部中断编号掩码，
-  *                 取值为宏INT_EINTMASK_EINTM0至INT_EINTMASK_EINTM31的位或组合。
-  *       NewState: 外部中断使能请求，
-  *                 取值范围为：TRUE 或 FALSE。
-  * 返回  无。
+  * ����  �ⲿ�ж�(EINT)ʹ�����á�
+  * ����  EintMask: �ⲿ�жϱ�����룬
+  *                 ȡֵΪ��INT_EINTMASK_EINTM0��INT_EINTMASK_EINTM31��λ����ϡ�
+  *       NewState: �ⲿ�ж�ʹ������
+  *                 ȡֵ��ΧΪ��TRUE �� FALSE��
+  * ����  �ޡ�
   */
 void
 INT_External_Mask_Enable (uint32_t EintMask, FunctionalState NewState)
 {
-    /* 参数校验 */
+    /* ����У�� */
     CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(NewState));
 
-    /*---------------- 设置INT_EINTMASK寄存器EINTMx位 ----------------*/
+    /*---------------- ����INT_EINTMASK�Ĵ���EINTMxλ ----------------*/
     if (NewState != FALSE)
     {
         INT_EINTMASK |= EintMask;
@@ -689,20 +689,20 @@ INT_External_Mask_Enable (uint32_t EintMask, FunctionalState NewState)
 }
 
 /**
-  * 描述  外部中断(EINT)上升沿中断使能配置。
-  * 输入  EintMask: 外部中断编号掩码，
-  *                 取值为宏INT_EINTMASK_EINTM0至INT_EINTMASK_EINTM31的位或组合。
-  *       NewState: 外部中断上升沿中断使能，
-  *                 取值范围为：TRUE 或 FALSE。
-  * 返回  无。
+  * ����  �ⲿ�ж�(EINT)�������ж�ʹ�����á�
+  * ����  EintMask: �ⲿ�жϱ�����룬
+  *                 ȡֵΪ��INT_EINTMASK_EINTM0��INT_EINTMASK_EINTM31��λ����ϡ�
+  *       NewState: �ⲿ�ж��������ж�ʹ�ܣ�
+  *                 ȡֵ��ΧΪ��TRUE �� FALSE��
+  * ����  �ޡ�
   */
 void
 INT_External_Rise_Enable (uint32_t EintMask, FunctionalState NewState)
 {
-    /* 参数校验 */
+    /* ����У�� */
     CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(NewState));
 
-    /*---------------- 设置INT_EINTRISE寄存器EINTRIx位 ----------------*/
+    /*---------------- ����INT_EINTRISE�Ĵ���EINTRIxλ ----------------*/
     if (NewState != FALSE)
     {
         INT_EINTRISE |= EintMask;
@@ -714,20 +714,20 @@ INT_External_Rise_Enable (uint32_t EintMask, FunctionalState NewState)
 }
 
 /**
-  * 描述  外部中断(EINT)下降沿中断使能配置。
-  * 输入  EintMask: 外部中断编号掩码，
-  *                 取值为宏INT_EINTMASK_EINTM0至INT_EINTMASK_EINTM31的位或组合。
-  *       NewState: 外部中断下降沿中断使能，
-  *                 取值范围为：TRUE 或 FALSE。
-  * 返回  无。
+  * ����  �ⲿ�ж�(EINT)�½����ж�ʹ�����á�
+  * ����  EintMask: �ⲿ�жϱ�����룬
+  *                 ȡֵΪ��INT_EINTMASK_EINTM0��INT_EINTMASK_EINTM31��λ����ϡ�
+  *       NewState: �ⲿ�ж��½����ж�ʹ�ܣ�
+  *                 ȡֵ��ΧΪ��TRUE �� FALSE��
+  * ����  �ޡ�
   */
 void
 INT_External_Fall_Enable (uint32_t EintMask, FunctionalState NewState)
 {
-    /* 参数校验 */
+    /* ����У�� */
     CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(NewState));
 
-    /*---------------- 设置INT_EINTFALL寄存器EINTFAx位 ----------------*/
+    /*---------------- ����INT_EINTFALL�Ĵ���EINTFAxλ ----------------*/
     if (NewState != FALSE)
     {
         INT_EINTFALL |= EintMask;
@@ -739,52 +739,52 @@ INT_External_Fall_Enable (uint32_t EintMask, FunctionalState NewState)
 }
 
 /**
-  * 描述  获取外部中断(EINT)中断标志位。
-  * 输入  EintNum: 外部中断编号，
-  *                取值为宏INT_EXTERNAL_INTERRUPT_0至
-  *                INT_EXTERNAL_INTERRUPT_31中的一个，
-  *                即0~31。
-  * 返回  外部中断(EINT)中断标志，0：没有发生外部中断，1：发生外部中断。
+  * ����  ��ȡ�ⲿ�ж�(EINT)�жϱ�־λ��
+  * ����  EintNum: �ⲿ�жϱ�ţ�
+  *                ȡֵΪ��INT_EXTERNAL_INTERRUPT_0��
+  *                INT_EXTERNAL_INTERRUPT_31�е�һ����
+  *                ��0~31��
+  * ����  �ⲿ�ж�(EINT)�жϱ�־��0��û�з����ⲿ�жϣ�1�������ⲿ�жϡ�
   */
 FlagStatus
 INT_Get_External_Flag (uint32_t EintNum)
 {
     uint32_t tmpreg = 0;
 
-    /* 参数校验 */
+    /* ����У�� */
     CHECK_RESTRICTION(CHECK_INT_EXTERNAL_NUM(EintNum));
 
-    /*---------------- 读取INT_EINTF寄存器EINTIFx位 ----------------*/
+    /*---------------- ��ȡINT_EINTF�Ĵ���EINTIFxλ ----------------*/
     tmpreg = INT_EINTF_EINTIF0 << EintNum;
     if (INT_EINTF & tmpreg)
     {
-        /* 发生了外部中断 */
+        /* �������ⲿ�ж� */
         return SET;
     }
     else
     {
-        /* 没有发生了外部中断 */
+        /* û�з������ⲿ�ж� */
         return RESET;
     }
 }
 
 /**
-  * 描述  清除外部中断(EINT)中断标志位。
-  * 输入  EintNum: 外部中断编号，
-  *                取值为宏INT_EXTERNAL_INTERRUPT_0至
-  *                INT_EXTERNAL_INTERRUPT_31中的一个，
-  *                即0~31。
-  * 返回  无。
+  * ����  ����ⲿ�ж�(EINT)�жϱ�־λ��
+  * ����  EintNum: �ⲿ�жϱ�ţ�
+  *                ȡֵΪ��INT_EXTERNAL_INTERRUPT_0��
+  *                INT_EXTERNAL_INTERRUPT_31�е�һ����
+  *                ��0~31��
+  * ����  �ޡ�
   */
 void
 INT_External_Clear_Flag (uint32_t EintNum)
 {
     uint32_t tmpreg = 0;
 
-    /* 参数校验 */
+    /* ����У�� */
     CHECK_RESTRICTION(CHECK_INT_EXTERNAL_NUM(EintNum));
 
-    /*---------------- 清零INT_EINTF寄存器EINTIFx位 ----------------*/
+    /*---------------- ����INT_EINTF�Ĵ���EINTIFxλ ----------------*/
     tmpreg = INT_EINTF_EINTIF0 << EintNum;
     while((INT_EINTF & tmpreg)>>(EintNum+INT_EINTF_EINTIF0_POS))
     {
@@ -793,13 +793,13 @@ INT_External_Clear_Flag (uint32_t EintNum)
 }
 
 /**
-  * 描述  外部中断(EINT)中断源配置。
-  * 输入  EintNum: 外部中断编号，
-  *                取值为宏INT_EXTERNAL_INTERRUPT_0至
-  *                INT_EXTERNAL_INTERRUPT_31中的一个，
-  *                即0~15。
-  *       PeripheralSource: 外设中断线的中断输入源，
-  *                         取值范围为：
+  * ����  �ⲿ�ж�(EINT)�ж�Դ���á�
+  * ����  EintNum: �ⲿ�жϱ�ţ�
+  *                ȡֵΪ��INT_EXTERNAL_INTERRUPT_0��
+  *                INT_EXTERNAL_INTERRUPT_31�е�һ����
+  *                ��0~15��
+  *       PeripheralSource: �����ж��ߵ��ж�����Դ��
+  *                         ȡֵ��ΧΪ��
   *                           INT_EXTERNAL_SOURCE_PA
   *                           INT_EXTERNAL_SOURCE_PB
   *                           INT_EXTERNAL_SOURCE_PC
@@ -814,18 +814,18 @@ INT_External_Clear_Flag (uint32_t EintNum)
   *                           INT_EXTERNAL_SOURCE_ALARMCLK
   *                           INT_EXTERNAL_SOURCE_AES
   *                           INT_EXTERNAL_SOURCE_EINT21TO31
-  * 返回  无。
+  * ����  �ޡ�
   */
 void
 INT_External_Source_Enable (uint32_t EintNum, uint32_t PeripheralSource)
 {
     uint32_t tmpreg = 0;
 
-    /* 参数校验 */
+    /* ����У�� */
     CHECK_RESTRICTION(CHECK_INT_EXTERNAL_PERIPHERAL(EintNum));
     CHECK_RESTRICTION(CHECK_INT_EXTERNAL_SOURCE(PeripheralSource));
 
-    /*---------------- 设置INT_EINTSS0寄存器EINTSOUx位 ----------------*/
+    /*---------------- ����INT_EINTSS0�Ĵ���EINTSOUxλ ----------------*/
     tmpreg = (EintNum % 8) * 4;
     if (EintNum < 8)
     {
@@ -844,5 +844,5 @@ INT_External_Source_Enable (uint32_t EintNum, uint32_t PeripheralSource)
     }
 }
 /**
-  *   ##### 外部中断(INT)功能配置函数定义结束 #####
+  *   ##### �ⲿ�ж�(INT)�������ú���������� #####
   */
