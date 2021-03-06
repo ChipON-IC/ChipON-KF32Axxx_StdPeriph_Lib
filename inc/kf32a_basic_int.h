@@ -159,7 +159,7 @@ FlagStatus INT_Get_Interrupt_Flag (InterruptIndex Peripheral);
 void INT_Clear_Interrupt_Flag (InterruptIndex Peripheral);
 void INT_Interrupt_Priority_Config (InterruptIndex Peripheral,
                     uint32_t Preemption, uint32_t SubPriority);
-void INT_Set_Interrupt_Priority?(InterruptIndex?Peripheral,?uint32_t?Priority);
+void INT_Set_Interrupt_Priority(InterruptIndex Peripheral, uint32_t Priority);
 void INT_Stack_Delay_Enable (uint8_t IntDelay);
 void INT_Vector_Offset_Config (uint32_t VectorOffset);
 /* 外部中断(INT)功能初始化函数定义******************************************/
