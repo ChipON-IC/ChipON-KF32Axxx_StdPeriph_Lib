@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_can.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.61
+  * 版  本  V2.62
   * 日  期  2019-11-16
   * 描  述  该文件提供了控制器局域网总线(CAN)相关的功能函数，包含：
   *          + 控制器局域网总线(CAN)初始化函数
@@ -96,7 +96,7 @@ CAN_Reset(CAN_SFRmap* CANx)
 #ifdef KF32A_Periph_can3
     if(CANx == CAN3_SFR)
     {
-    	PCLK_CTL2_Peripheral_Clock_Enable(PCLK_CTL2_CAN3CLKEN, TRUE);
+    	PCLK_CTL2_Peripheral_Clock_Enable(PCLK_CTL2_CAN3CLKEN, TRUE);  
         RST_CTL2_Peripheral_Reset_Enable(RST_CTL2_CAN3RST, TRUE);
         RST_CTL2_Peripheral_Reset_Enable(RST_CTL2_CAN3RST, FALSE);
     }
@@ -104,17 +104,17 @@ CAN_Reset(CAN_SFRmap* CANx)
 #ifdef KF32A_Periph_can4
     if(CANx == CAN4_SFR)
     {
-    	PCLK_CTL2_Peripheral_Clock_Enable(PCLK_CTL3_CAN4CLKEN, TRUE);
-        RST_CTL2_Peripheral_Reset_Enable(RST_CTL3_CAN4RST, TRUE);
-        RST_CTL2_Peripheral_Reset_Enable(RST_CTL3_CAN4RST, FALSE);
+    	PCLK_CTL3_Peripheral_Clock_Enable(PCLK_CTL3_CAN4CLKEN, TRUE);
+        RST_CTL3_Peripheral_Reset_Enable(RST_CTL3_CAN4RST, TRUE);
+        RST_CTL3_Peripheral_Reset_Enable(RST_CTL3_CAN4RST, FALSE);
     }
 #endif
 #ifdef KF32A_Periph_can5
     if(CANx == CAN5_SFR)
     {
-    	PCLK_CTL2_Peripheral_Clock_Enable(PCLK_CTL3_CAN5CLKEN, TRUE);
-        RST_CTL2_Peripheral_Reset_Enable(RST_CTL3_CAN5RST, TRUE);
-        RST_CTL2_Peripheral_Reset_Enable(RST_CTL3_CAN5RST, FALSE);
+    	PCLK_CTL3_Peripheral_Clock_Enable(PCLK_CTL3_CAN5CLKEN, TRUE);
+        RST_CTL3_Peripheral_Reset_Enable(RST_CTL3_CAN5RST, TRUE);
+        RST_CTL3_Peripheral_Reset_Enable(RST_CTL3_CAN5RST, FALSE);
     }
 #endif
 }

@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_adc.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.61
+  * 版  本  V2.62
   * 日  期  2019-11-16
   * 描  述  该文件提供了模数转换模块(ADC)的库函数声明及相关宏定义。
   *
@@ -785,10 +785,4 @@ void ADC_Set_INT_Enable (ADC_SFRmap* ADCx,
 FlagStatus ADC_Get_INT_Flag (ADC_SFRmap* ADCx, uint32_t InterruptType);
 void ADC_Clear_INT_Flag (ADC_SFRmap* ADCx, uint32_t InterruptType);
 INTStatus ADC_Get_INT_Status (ADC_SFRmap* ADCx, uint32_t InterruptType);
-void
-ADC_HPChannel_TxCCRy_Trig_Enable (ADC_SFRmap* ADCx,
-							 uint32_t HPExternalTrigEvent, FunctionalState NewState);
-void
-ADC_RegularChannel_TxCCRy_Trig_Enable (ADC_SFRmap* ADCx,
-							 uint32_t ExternalTrigEvent, FunctionalState NewState);
 #endif /* _KF32A_BASIC_ADC_H */

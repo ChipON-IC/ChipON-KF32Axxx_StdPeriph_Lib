@@ -2,7 +2,7 @@
   *********************************************************************
   * 文件名 KF32A_Config.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.61
+  * 版  本  V2.62
   * 日  期  2019-11-16
   * 描  述  KF32A系列外设配置
   *
@@ -103,10 +103,14 @@
 	#define KF32A140
 #elif defined KF32A140IQS
 	#define KF32A140
+#elif defined KF32A140KQT
+	#define KF32A140
+#elif defined KF32A140KQS
+	#define KF32A140
 #elif defined KF32A140IQT
 	#define KF32A140
 #endif
-#if defined KF32A140IQS || defined KF32A140IQT
+#if defined KF32A140IQS || defined KF32A140IQT || defined KF32A140KQS || defined KF32A140KQT
 	#define A140_CAN_EX 
 	#define A140_USART_EX 
 #endif

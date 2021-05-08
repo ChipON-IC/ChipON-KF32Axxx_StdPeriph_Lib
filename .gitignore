@@ -61,8 +61,8 @@ _config
 .project
 .settings/
 kf_it.c
-system_init.c
-system_init.h
+!system_init.c
+!system_init.h
 main.c
 __Kungfu32_chipmodel_define.h
 !.gitignore

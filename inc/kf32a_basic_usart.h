@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_usart.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.61
+  * 版  本  V2.62
   * 日  期  2019-11-16
   * 描述    该文件用于USART外设的库函数声明及相关宏定义。
   *
@@ -252,7 +252,9 @@ typedef struct
 #define USART_IT_TFEIE                          ((uint32_t)1<<USART_IER_TFEIE_POS)
 #define USART_IT_TXEIE                          ((uint32_t)1<<USART_IER_TXEIE_POS)
 #define USART_IT_URCDE                          ((uint32_t)1<<USART_IER_URCDE_POS)
+#define USART_IT_IDLEIE                 	    ((uint32_t)1<<USART_IER_IDLEIE_POS)
 #define USART_IT_UTXDE                          ((uint32_t)1<<USART_IER_UTXDE_POS)
+#define USART_IT_UADMIE                 		((uint32_t)1<<USART_IER_UADMIE_POS)
 #define CHECK_USART_CONFIG_IT(IT)               (((IT) == USART_IT_OVFEIE) \
                                               || ((IT) == USART_IT_PAREIE) \
                                               || ((IT) == USART_IT_FREIE) \
@@ -266,7 +268,9 @@ typedef struct
                                               || ((IT) == USART_IT_TFEIE) \
                                               || ((IT) == USART_IT_TXEIE) \
                                               || ((IT) == USART_IT_URCDE) \
-                                              || ((IT) == USART_IT_UTXDE))
+                                              || ((IT) == USART_IT_IDLEIE) \
+                                              || ((IT) == USART_IT_UTXDE) \
+                                              || ((IT) == USART_IT_UADMIE))
 #define CHECK_USART_GET_IT(IT)                  (((IT) == USART_IT_OVFEIE) \
                                               || ((IT) == USART_IT_PAREIE) \
                                               || ((IT) == USART_IT_FREIE) \
@@ -280,7 +284,9 @@ typedef struct
                                               || ((IT) == USART_IT_TFEIE) \
                                               || ((IT) == USART_IT_TXEIE) \
                                               || ((IT) == USART_IT_URCDE) \
-                                              || ((IT) == USART_IT_UTXDE))
+                                              || ((IT) == USART_IT_IDLEIE) \
+                                              || ((IT) == USART_IT_UTXDE) \
+                                              || ((IT) == USART_IT_UADMIE))
 
 /**
   * USART标志位定义
@@ -297,6 +303,8 @@ typedef struct
 #define USART_FLAG_RDRIF                        ((uint32_t)1<<USART_STR_RDRIF_POS)
 #define USART_FLAG_TFEIF                        ((uint32_t)1<<USART_STR_TFEIF_POS)
 #define USART_FLAG_TXEIF                        ((uint32_t)1<<USART_STR_TXEIF_POS)
+#define USART_FLAG_UADMIF               	   	((uint32_t)1<<USART_STR_UADMIF_POS)
+#define USART_FLAG_IDLFIF             		    ((uint32_t)1<<USART_STR_IDLFIF_POS)
 #define CHECK_USART_GET_FLAG(FLAG)              (((FLAG) == USART_FLAG_OVFEIF) \
                                               || ((FLAG) == USART_FLAG_PAREIF) \
                                               || ((FLAG) == USART_FLAG_FREIF) \
@@ -308,7 +316,9 @@ typedef struct
                                               || ((FLAG) == USART_FLAG_CTSIF) \
                                               || ((FLAG) == USART_FLAG_RDRIF) \
                                               || ((FLAG) == USART_FLAG_TFEIF) \
-                                              || ((FLAG) == USART_FLAG_TXEIF))
+                                              || ((FLAG) == USART_FLAG_TXEIF) \
+                                              || ((FLAG) == USART_FLAG_UADMIF) \
+                                              || ((FLAG) == USART_FLAG_IDLFIF))
 
 
 /* USART模块(USART)初始化函数定义**************************************/
@@ -358,6 +368,9 @@ void USART_SendData(USART_SFRmap* USARTx, uint8_t Data);
 void USART_TransmitData(USART_SFRmap* USARTx, uint8_t Data);
 uint32_t USART_ReceiveData(USART_SFRmap* USARTx);
 void USART_Address_Match_Config(USART_SFRmap* USARTx, uint8_t DIV);
+void USART_Send_Idle_Frame_Enable(USART_SFRmap* USARTx, FunctionalState NewState);
+void USART_Receive_Idle_Frame_Config(USART_SFRmap* USARTx, FunctionalState NewState);
+
 /* USART模块(USART)7816初始化及配置函数定义****************************/
 void USART_7816_Cmd(USART_SFRmap* USARTx, FunctionalState NewState);
 void USART_7816_CLKOUT_Enable (USART_SFRmap* USARTx,
@@ -374,6 +387,8 @@ void USART_Transmit_Repeat_Times_Config(USART_SFRmap* USARTx, uint32_t SELECT);
 void USART_Receive_Repeat_Times_Config(USART_SFRmap* USARTx, uint32_t SELECT);
 void USART_7816_CLKDIV_Config (USART_SFRmap* USARTx, uint8_t DIV);
 void USART_7816_EGT_Config(USART_SFRmap* USARTx, uint8_t EGT);
+void USART_7816_Resend_Mode_Select(USART_SFRmap* USARTx, FunctionalState NewState);
+
 /* USART模块(USART)中断管理函数定义************************************/
 void USART_Receive_Overflow_INT_Enable (USART_SFRmap* USARTx,
                     FunctionalState NewState);
@@ -397,6 +412,8 @@ void USART_Receive_DMA_INT_Enable (USART_SFRmap* USARTx,
                     FunctionalState NewState);
 void USART_Transmit_DMA_INT_Enable (USART_SFRmap* USARTx,
                     FunctionalState NewState);
+void USART_IDLE_INT_Enable(USART_SFRmap* USARTx, FunctionalState NewState);
+void USART_UADM_INT_Enable(USART_SFRmap* USARTx, FunctionalState NewState);
 FlagStatus USART_Get_Receive_Overflow_Flag (USART_SFRmap* USARTx);
 FlagStatus USART_Get_Parity_ERROR_Flag (USART_SFRmap* USARTx);
 FlagStatus USART_Get_Frame_ERROR_Flag (USART_SFRmap* USARTx);
@@ -409,6 +426,7 @@ FlagStatus USART_Get_CTS_Flag (USART_SFRmap* USARTx);
 FlagStatus USART_Get_Receive_BUFR_Ready_Flag (USART_SFRmap* USARTx);
 FlagStatus USART_Get_Transmit_BUFR_Empty_Flag (USART_SFRmap* USARTx);
 FlagStatus USART_Get_Transmitter_Empty_Flag (USART_SFRmap* USARTx);
+FlagStatus USART_Get_Receive_Frame_Idel_Flag(USART_SFRmap* USARTx);
 void USART_Clear_Receive_Overflow_INT_Flag (USART_SFRmap* USARTx);
 void USART_Clear_Parity_ERROR_INT_Flag (USART_SFRmap* USARTx);
 void USART_Clear_Frame_ERROR_INT_Flag (USART_SFRmap* USARTx);
@@ -418,6 +436,8 @@ void USART_Clear_WeakUP_INT_Flag (USART_SFRmap* USARTx);
 void USART_Clear_Transmit_ERROR_INT_Flag (USART_SFRmap* USARTx);
 void USART_Clear_Receive_ERROR_INT_Flag (USART_SFRmap* USARTx);
 void USART_Clear_CTS_INT_Flag (USART_SFRmap* USARTx);
+void USART_Clear_UADM_INT_Flag (USART_SFRmap* USARTx);
+void USART_Clear_IDLE_INT_Flag (USART_SFRmap* USARTx);
 void USART_Clear_Receive_BUFR_INT_Flag (USART_SFRmap* USARTx);
 void USART_Clear_Transmit_BUFR_INT_Flag (USART_SFRmap* USARTx);
 FlagStatus USART_Get_WUEN_Flag (USART_SFRmap* USARTx);

@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_usart.c
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.61
+  * 版  本  V2.62
   * 日  期  2019-11-16
   * 描  述  该文件提供了USART模块(USART)相关的功能函数，包含：
   *          + USART模块(USART)初始化函数
@@ -583,7 +583,8 @@ USART_Auto_BaudRate_Detection_Enable(USART_SFRmap* USARTx,
   * 描述  读取USART自动波特率检测使能位。
   * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。
   *       NewState: USART自动波特率检测使能状态，取值为TRUE 或 FALSE。
-  * 返回  无。
+  * 返回  1: 使能自动波特率模式(完成自动波特率后清零)
+  *       0: 禁止自动波特率模式
   */
 FlagStatus USART_Get_Auto_BaudRate_Detection_Flag(USART_SFRmap* USARTx)
 {
@@ -1068,6 +1069,47 @@ USART_Address_Match_Config(USART_SFRmap* USARTx, uint8_t DIV)
     tmpreg = DIV << USART_ADM_ADM0_POS;
     USARTx->ADM = SFR_Config (USARTx->ADM, ~USART_ADM_ADM, tmpreg);
 }
+
+/**
+  * 描述  配置USART全双工模式时发送空闲帧使能。
+  * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。
+  *      NewState:  TRUE: 使能发送器发送空闲帧
+  *      			FALSE: 禁止发送器发送空闲帧。
+  * 返回  无。
+  */
+void
+USART_Send_Idle_Frame_Enable(USART_SFRmap* USARTx, FunctionalState NewState)
+{
+	uint32_t tmpreg = 0;
+
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_USART_ALL_PERIPH(USARTx));
+    CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(NewState));
+
+    tmpreg = NewState << USART_CTLR_TIDLEEN_POS;
+    USARTx->CTLR = SFR_Config(USARTx->CTLR, ~USART_CTLR_TIDLEEN, tmpreg);
+}
+
+/**
+  * 描述  配置USART接收空闲帧中断标志产生模式。
+  * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。
+  *      NewState:  TRUE: 空闲帧中断标志和 RDRIF 无关
+  *      			FALSE: 空闲帧中断标志和 RDRIF 有关。
+  * 返回  无。
+  */
+void
+USART_Receive_Idle_Frame_Config(USART_SFRmap* USARTx, FunctionalState NewState)
+{
+	uint32_t tmpreg = 0;
+
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_USART_ALL_PERIPH(USARTx));
+    CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(NewState));
+
+    tmpreg = NewState << USART_CTLR_RIDLES_POS;
+    USARTx->CTLR = SFR_Config(USARTx->CTLR, ~USART_CTLR_RIDLES, tmpreg);
+}
+
 /**
   *   ##### USART模块(USART)功能配置函数结束 #####
   */
@@ -1195,12 +1237,12 @@ USART_BGT_Config(USART_SFRmap* USARTx, FunctionalState NewState)
     if (NewState != FALSE)
     {
         /* 插入BGT，宽度为22etu*/
-        SFR_SET_BIT_ASM(USARTx->U7816R, USART_U7816R_BGT_POS);
+        SFR_SET_BIT_ASM(USARTx->U7816R, USART_U7816R_BGTEN_POS);
     }
     else
     {
         /* 不插入BGT*/
-        SFR_CLR_BIT_ASM(USARTx->U7816R, USART_U7816R_BGT_POS);
+        SFR_CLR_BIT_ASM(USARTx->U7816R, USART_U7816R_BGTEN_POS);
     }
 }
 /**
@@ -1338,6 +1380,27 @@ USART_7816_EGT_Config(USART_SFRmap* USARTx, uint8_t EGT)
     tmpreg = EGT << USART_U7816R_EGT0_POS;
     USARTx->U7816R = SFR_Config (USARTx->U7816R, ~USART_U7816R_EGT, tmpreg);
 }
+
+/**
+  * 描述  配置USART 7816重发模式选择。
+  * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。
+  *       NewState: FALSE:只要接收到错误帧就启动重发
+  *       			TRUE: 重发次数到设置次数后停止重发
+  * 返回  无。
+  */
+void
+USART_7816_Resend_Mode_Select(USART_SFRmap* USARTx, FunctionalState NewState)
+{
+    uint32_t tmpreg = 0;
+
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_USART_ALL_PERIPH(USARTx));
+
+    /*---------------- 设置USART_U7816R寄存器位TREPMS ----------------*/
+    tmpreg = NewState << USART_U7816R_TREPMS_POS;
+    USARTx->U7816R = SFR_Config (USARTx->U7816R, ~USART_U7816R_TREPMS, tmpreg);
+}
+
 /**
   *   ##### USART模块(USART)7816初始化及配置函数定义结束 #####
   */
@@ -1713,6 +1776,58 @@ USART_Transmit_DMA_INT_Enable (USART_SFRmap* USARTx, FunctionalState NewState)
 }
 
 /**
+  * 描述  设置USART IDLEIF 中断使能。
+  * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。
+  *       NewState: USART 中断使能状态，取值为TRUE 或 FALSE。
+  * 返回  无。
+  */
+void
+USART_IDLE_INT_Enable(USART_SFRmap* USARTx, FunctionalState NewState)
+{
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_USART_ALL_PERIPH(USARTx));
+    CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(NewState));
+
+    /*---------------- 设置USART_IER寄存器IDLEIE位 ----------------*/
+    if (NewState != FALSE)
+    {
+        /* 使能USART IDLEIE中断位 */
+        SFR_SET_BIT_ASM(USARTx->IER, USART_IER_IDLEIE_POS);
+    }
+    else
+    {
+        /* 禁止USART IDLEIE中断 */
+        SFR_CLR_BIT_ASM(USARTx->IER, USART_IER_IDLEIE_POS);
+    }
+}
+
+/**
+  * 描述  设置USART UADMIF 中断使能。
+  * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。
+  *       NewState: USART 中断使能状态，取值为TRUE 或 FALSE。
+  * 返回  无。
+  */
+void
+USART_UADM_INT_Enable(USART_SFRmap* USARTx, FunctionalState NewState)
+{
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_USART_ALL_PERIPH(USARTx));
+    CHECK_RESTRICTION(CHECK_FUNCTIONAL_STATE(NewState));
+
+    /*---------------- 设置USART_IER寄存器UADMIE位 ----------------*/
+    if (NewState != FALSE)
+    {
+        /* 使能USART UADMIE中断位 */
+        SFR_SET_BIT_ASM(USARTx->IER, USART_IER_UADMIE_POS);
+    }
+    else
+    {
+        /* 禁止USART UADMIE中断 */
+        SFR_CLR_BIT_ASM(USARTx->IER, USART_IER_UADMIE_POS);
+    }
+}
+
+/**
   * 描述  获取USART接收溢出中断标志状态 。
   * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。
   * 返回  1: USART接收溢出；
@@ -2037,6 +2152,31 @@ USART_Get_Transmitter_Empty_Flag (USART_SFRmap* USARTx)
 }
 
 /**
+  * 描述  获取USART接收空闲帧中断标志 。
+  * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。
+  * 返回    1: 接收器接收到空闲帧
+  *       0: 接收器没有接收到空闲帧。
+  */
+FlagStatus
+USART_Get_Receive_Frame_Idel_Flag(USART_SFRmap* USARTx)
+{
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_USART_ALL_PERIPH(USARTx));
+
+    /*---------------- 读取USART_STR寄存器TXEIF位 ----------------*/
+    if (USARTx->STR & USART_STR_IDLFIF)
+    {
+        /* USART 发射器为空*/
+        return SET;
+    }
+    else
+    {
+        /* USART 发射器不为空 */
+        return RESET;
+    }
+}
+
+/**
   * 描述  清零USART接收溢出中断标志。
   * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。
   * 返回  无。
@@ -2187,6 +2327,40 @@ USART_Clear_CTS_INT_Flag (USART_SFRmap* USARTx)
     SFR_SET_BIT_ASM(USARTx->STR, USART_STR_CTSIC_POS);
     while(USARTx->STR & USART_STR_CTSIF);
     SFR_CLR_BIT_ASM(USARTx->STR, USART_STR_CTSIC_POS);
+}
+
+/**
+  * 描述  清零USART UADM中断位。
+  * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。
+  * 返回  无。
+  */
+void
+USART_Clear_UADM_INT_Flag (USART_SFRmap* USARTx)
+{
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_USART_ALL_PERIPH(USARTx));
+
+    /*---------------- 设置USART_STR寄存器UADM位 ----------------*/
+    SFR_SET_BIT_ASM(USARTx->STR, USART_STR_UADMIC_POS);
+    while(USARTx->STR & USART_STR_UADMIF);
+    SFR_CLR_BIT_ASM(USARTx->STR, USART_STR_UADMIC_POS);
+}
+
+/**
+  * 描述  清零USART IDLE中断位。
+  * 输入  USARTx: 指向USART内存结构的指针，取值为USART0_SFR~USART8_SFR。
+  * 返回  无。
+  */
+void
+USART_Clear_IDLE_INT_Flag (USART_SFRmap* USARTx)
+{
+    /* 参数校验 */
+    CHECK_RESTRICTION(CHECK_USART_ALL_PERIPH(USARTx));
+
+    /*---------------- 设置USART_STR寄存器IDLE位 ----------------*/
+    SFR_SET_BIT_ASM(USARTx->STR, USART_STR_IDLEIC_POS);
+    while(USARTx->STR & USART_STR_IDLFIF);
+    SFR_CLR_BIT_ASM(USARTx->STR, USART_STR_IDLEIC_POS);
 }
 
 /**

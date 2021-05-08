@@ -2,7 +2,7 @@
   ******************************************************************************
   * 文件名  kf32a_basic_sysctl.h
   * 作  者  ChipON_AE/FAE_Group
-  * 版  本  V2.61
+  * 版  本  V2.62
   * 日  期  2019-11-16
   * 描  述  该文件提供了系统控制相关功能函数声明及相关宏定义。
   *********************************************************************
@@ -111,5 +111,8 @@ FlagStatus SYSCTL_Stack_Pointer_State (void);
 void SYSCTL_Stack_Pointer_Config (uint32_t PresentSP);
 void SYSCTL_Exception_Reset_Enable (FunctionalState NewState);
 void SYSCTL_System_Reset_Enable (FunctionalState NewState);
+void SYSCTL_Vector_Offset_Config (uint32_t VectorOffset);
+void SYSCTL_Ram_Space_Config (uint32_t RamSpace);
+void SYSCTL_Flash_Start_Remap_Config (uint32_t MemCtl);
 
 #endif /* _KF32A_BASIC_SYSCTL_H */

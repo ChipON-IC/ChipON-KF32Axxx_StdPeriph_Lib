@@ -1,12 +1,45 @@
 Change Log
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+★ V2.62  2021-05-08
+
+●69 增加 system_init.c 中外设高频选择时钟源
+●68 删除 system_init.c 中出现的 #include "usart.h"
+●67 设置 添加内部低频时钟使能 OSC_INTLF_Software_Enable(TRUE);
+●66 设置 system_init.c 中的 delay_C = 0xA39;
+●65 纠正 kf32a_basic_usart.c 第586行的返回值描述
+●64 纠正 kf32a_basic_spi.c 第3行的描述为 kf32a_basic_spi.c
+●63 删除声明 void ADC_RegularChannel_TxCCRy_Trig_Enable (ADC_SFRmap* ADCx,uint32_t ExternalTrigEvent, FunctionalState NewState);
+●62 删除声明 void ADC_HPChannel_TxCCRy_Trig_Enable (ADC_SFRmap* ADCx,uint32_t HPExternalTrigEvent, FunctionalState NewState);
+●61 新增 system_init.c system_init.h
+●60 删除定义 KF32A_Periph_usart
+●59 新增 函数声明  void SYSCTL_Flash_Start_Remap_Config (uint32_t MemCtl);
+●58 新增 函数声明  void SYSCTL_Ram_Space_Config (uint32_t RamSpace);
+●57 新增 函数声明  void SYSCTL_Vector_Offset_Config (uint32_t VectorOffset);
+●56 修改 CAN4_RECEIVE_ADDR   CAN5_RECEIVE_ADDR  地址
+●55 修改 CAN_Reset调用的函数
+●54 新增 USART_Clear_UADM_INT_Flag (USART_SFRmap* USARTx);
+●53 新增 USART_Clear_IDLE_INT_Flag (USART_SFRmap* USARTx);
+●52 新增 USART_Clear_UADM_INT_Flag (USART_SFRmap* USARTx);
+●51 新增 USART_Get_Receive_Frame_Idel_Flag(USART_SFRmap* USARTx);
+●50 新增 USART_UADM_INT_Enable(USART_SFRmap* USARTx, FunctionalState NewState);
+●49 新增 USART_IDLE_INT_Enable(USART_SFRmap* USARTx, FunctionalState NewState);
+●48 新增 USART_7816_Resend_Mode_Select(USART_SFRmap* USARTx, FunctionalState NewState);
+●47 新增 USART_Receive_Idle_Frame_Config(USART_SFRmap* USARTx, FunctionalState NewState);
+●46 新增 USART_Send_Idle_Frame_Enable(USART_SFRmap* USARTx, FunctionalState NewState);
+●45 更改 BGT 为 BGTEN
+●44 新增 CTLR_RTS IDLEIC UADMIE IDLEIE IDLEIF TIDLEEN RIDLES TREPMS  宏定义
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ★ V2.614  2021-02-24
 
 ●43 新增INT_Set_Interrupt_Priority函数
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ★ V2.613  2021-02-20
 
 ●42 修改KF32A_Config.h型号32A151外设SPI错误，增加新型号支持
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ★ V2.612  2021-02-01
 
